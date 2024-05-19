@@ -1,0 +1,55 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    name: Build
+    runs-on: self-hosted
+    strategy:
+      matrix:
+        node-version: [22.x]
+    
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'yarn'
+      
+      - name: clear old modules & lock
+        run:  rm -rf node_modules *lock*
+
+      - name: upgrade all deps
+        run:  yarn upgrade
+
+      - name: Install dependencies
+        run:  yarn install
+
+      - name: Build project
+        run:  yarn run build
+
+deploy:
+    name: Deploy
+    needs: build
+    runs-on: self-hosted
+    
+    steps:
+      - name: make backup folder
+        run:  mkdir /home/ubuntu/backups/$(date '+%Y_%m_%d_%H_%M')
+
+      - name: backup old site
+        run:  cp -r /var/www/html/* /home/ubuntu/backups/$(date '+%Y_%m_%d_%H_%M') 
+      
+      - name: Clear contents of /var/www/html
+        run:  rm -rf /var/www/html/*
+      
+      - name: deploy new site
+        run:  cp -r ./dist/ /var/www/html/
+
