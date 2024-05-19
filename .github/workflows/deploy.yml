@@ -26,11 +26,8 @@ jobs:
       - name: clear old modules & lock
         run:  rm -rf node_modules *lock*
 
-      - name: upgrade all deps
-        run:  yarn upgrade
-
-      - name: Install dependencies
-        run:  yarn install
+      - name: Install dependencies & upgrade
+        run:  yarn install && yarn upgrade
 
       - name: Build project
         run:  yarn run build
