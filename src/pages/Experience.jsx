@@ -13,63 +13,87 @@ function Experience() {
       <VerticalTimeline lineColor="#3e497a">
         <VerticalTimelineElement
           className="vertical-timeline-element--education"
-          date="2010 - 2014"
+          date="2023 - 2025(projected)"
           iconStyle={{ background: "#3e497a", color: "#fff" }}
           icon={<SchoolIcon />}
         >
           <h3 className="vertical-timeline-element-title">
-            My Random High School, Random Place, Random State
+            42 London
           </h3>
-          <p> High School Diploma</p>
+          <h4 className="vertical-timeline-element-subtitle">
+            <a href="https://42london.com/curriculum/">42 Common Core </a>
+          </h4>
+          <p> 
+              C/C++, Linux, Bash scripting, Vim </p>
         </VerticalTimelineElement>
+        
         <VerticalTimelineElement
           className="vertical-timeline-element--education"
-          date="2014 - 2018"
+          date = "2023 - 2024"
           iconStyle={{ background: "#3e497a", color: "#fff" }}
           icon={<SchoolIcon />}
         >
           <h3 className="vertical-timeline-element-title">
-            My Cool University, Vancouver, British Columbia
+            Hyperion/CoGrammer
           </h3>
 
           <h4 className="vertical-timeline-element-subtitle">
-            Bachelor's Degree
+            < a href="https://www.hyperiondev.com/bootcamps/data-science-bootcamp/"> Data Science Bootcamp </a>
           </h4>
-
-          <p> Computer Science</p>
-        </VerticalTimelineElement>
-        <VerticalTimelineElement
-          className="vertical-timeline-element--work"
-          date="2018 - 2020"
-          iconStyle={{ background: "#e9d35b", color: "#fff" }}
-          icon={<WorkIcon />}
-        >
-          <h3 className="vertical-timeline-element-title">
-            Back End Engineer - Google
-          </h3>
-          <h4 className="vertical-timeline-element-subtitle">
-            San Francisco, CA
-          </h4>
-          <p>Developed the backend infrastructure for 3 projects.</p>
+          <p> Python, Data Analysis skills, Machine Learning </p>
         </VerticalTimelineElement>
 
         <VerticalTimelineElement
-          className="vertical-timeline-element--work"
-          date="2020 - present"
-          iconStyle={{ background: "#e9d35b", color: "#fff" }}
-          icon={<WorkIcon />}
+          className="vertical-timeline-element--education"
+          date = "2020 - 2022"
+          iconStyle={{ background: "#3e497a", color: "#fff" }}
+          icon={<SchoolIcon />}
         >
           <h3 className="vertical-timeline-element-title">
-            Full Stack Engineer - Twitch
+            UCC, Ireland
           </h3>
+
           <h4 className="vertical-timeline-element-subtitle">
-            San Francisco, CA
+            < a href="https://www.ucc.ie/en/ck411/"> BSc Data Science & Analytics </a>
           </h4>
-          <p>
-            Helped the team launch 2 major features by working both in the front
-            end and back end.
+          <p> Python, Java, SQL, R, Statistics and Probability, Calculus (Multivariable), Linear Algebra, Algorithms and Data Structures, Maths Modelling, Regression Analysis.
+            <a href="https://ucc-ie-public.courseleaf.com/programmes/bscdsa/#programmerequirementstext">  full list... </a>
           </p>
         </VerticalTimelineElement>
+
+        <VerticalTimelineElement
+          className="vertical-timeline-element--education"
+          date = "2018 - 2019"
+          iconStyle={{ background: "#3e497a", color: "#fff" }}
+          icon={<SchoolIcon />}
+        >
+          <h3 className="vertical-timeline-element-title">
+            NUI Galway, Ireland
+          </h3>
+
+          <h4 className="vertical-timeline-element-subtitle">
+            Mature Student Access Programme - Science Path
+          </h4>
+          <p> 
+            Maths, Physics, Biology, Chemistry, Academic Skills 
+          </p>
+        </VerticalTimelineElement>
+
+        <VerticalTimelineElement
+          className="vertical-timeline-element--work"
+          date="2006 - 2023"
+          iconStyle={{ background: "#e9d35b", color: "#fff" }}
+          icon={<WorkIcon />}
+        >
+          <h3 className="vertical-timeline-element-title">
+            Career as a Chef
+          </h3>
+          <p>
+            I have had a dynamic and varied career as a Chef since first starting in professional kitchens at 16 years old.<br/>
+            I've worked my way up from dish washing to running my own kitchens in a broad variety of establisments in Ireland, U.K, France and Australia
+          </p>
+        </VerticalTimelineElement>
+
       </VerticalTimeline>
     </div>
   );

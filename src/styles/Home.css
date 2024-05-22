@@ -56,11 +56,11 @@
 }
 
 @media only screen and (max-width: 600px) {
-  .about h2 {
+  .home_hd h2 {
     font-size: 40px;
   }
 
-  .about .prompt {
+  .home_hd .prompt {
     margin-top: 10px;
     font-size: 20px;
     width: 80%;
