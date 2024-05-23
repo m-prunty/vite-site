@@ -2,9 +2,13 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import "../styles/Navbar.css";
 import ReorderIcon from "@mui/icons-material/Reorder";
+import Logo from "/quad_parabola_fin.svg";
+
+
 
 function Navbar() {
   const [expandNavbar, setExpandNavbar] = useState(false);
+
 
   const location = useLocation();
 
@@ -24,6 +28,7 @@ function Navbar() {
         </button>
       </div>
       <div className="links">
+        <img src={ Logo } alt="logo" className="logo" />
         <Link to="/"> Home </Link>
         <Link to="/about"> About </Link>
         {  //      <Link to="/projects"> Projects </Link>
@@ -31,6 +36,7 @@ function Navbar() {
         <Link to="/experience"> Experience </Link>
       </div>
     </div>
+  
   );
 }
 

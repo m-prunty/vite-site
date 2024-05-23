@@ -1,25 +1,32 @@
 .home {
-  width: 100%;
+  width: 100vw;
   align-items: center;
   font-family: "Arial", sans-serif;
-  color: #3e497a;
+  color: #111111;
 }
 
 .home_hd {
-  width: 100%;
+  width: 100vw;
   height: calc(100vh - 100px);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
-  background-color: #21325e;
+  background-color: #222229;
+  background-image: url( "/quad_parabola_fin.svg" ) ;
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Do not repeat the image */
+  background-size: cover; /* Resize the background image to cover the entire container */
   color: #f0f0f0;
 }
 .home_hd h2 {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family:   "Courier New", "Lucida Console",monospace;
+  /*font-family: Arial, Helvetica, sans-serif;*/
+/*monospace;"Segoe UI", Tahoma, Geneva, Verdana, sans-serif;*/
+  
   font-size: 80px;
-  color: #e9d35b;
+  color: #ffffff;
   height: 50px;
 }
 
@@ -43,7 +50,7 @@
 }
 
 .skills h1 {
-  color: #3e497a;
+  color: #111111;
 }
 
 .skills .list {
@@ -55,17 +62,15 @@
   font-size: 20px;
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 625px) {
   .home_hd h2 {
-    font-size: 40px;
   }
 
   .home_hd .prompt {
-    margin-top: 10px;
-    font-size: 20px;
+    margin-top: 100px;
     width: 80%;
   }
-
+  
   .skills {
     text-align: center;
   }

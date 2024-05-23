@@ -1,15 +1,21 @@
 .navbar {
-  width: 100%;
+  width: 100vw;
   height: 100px;
-  background: #21325e;
+  background: #333339;
 }
-
+.logo{
+  width: 90px;
+  height: 90px;
+  display: flex;
+  align-items: start;
+  justify-content: flex-start;
+}
 .links {
-  width: 100%;
+  width: 100vw;
   height: 100%;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: start;
+  justify-content: flex-start;
   color: white;
 }
 
@@ -65,7 +71,7 @@
     display: flex;
   }
   #close a {
-    display: none;
+    /*display: none;*/
   }
 }
 
@@ -75,7 +81,7 @@
   }
 
   .hiddenLinks {
-    display: none;
+    /*display: none;*/
   }
 
   #open {
