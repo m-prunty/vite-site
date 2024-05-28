@@ -6,13 +6,17 @@ on:
       - master
 
 jobs:
+  defaults:
+    run:
+      working-directory: frontend/
+  
   build:
     name: Build
     runs-on: self-hosted
     strategy:
       matrix:
         node-version: [22.x]
-    
+   
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -25,12 +29,15 @@ jobs:
       
       - name: clear old modules & lock
         run:  rm -rf node_modules *lock*
+        working-directory: frontend/
 
       - name: Install dependencies & upgrade
         run:  yarn install && yarn upgrade
+        working-directory: frontend/
 
       - name: Build project
         run:  yarn run build
+        working-directory: frontend/
   
   deploy:
     name: Deploy
