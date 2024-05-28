@@ -55,5 +55,5 @@ jobs:
         run:  rm -rf /var/www/html/*
       
       - name: deploy new site
-        run:  cp -r ./dist/ /var/www/html/
+        run:  cp -r ./frontend/dist/ /var/www/html/
 
