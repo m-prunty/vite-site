@@ -75,7 +75,7 @@ jobs:
   
   deploy:
     name: Deploy
-    needs: build
+    needs: build_client
     runs-on: self-hosted
     
     steps:
