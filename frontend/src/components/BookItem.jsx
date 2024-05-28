@@ -1,10 +1,10 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import axios from "../axiosConfig";
 
 const handleDelete = async (id) => {
   try {
-    await axios.delete(`http://localhost:8800/books/${id}`);
+    await axios.delete(`/books/${id}`);
     window.location.reload()
   } catch (err) {
     console.log(err);

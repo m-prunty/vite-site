@@ -6,19 +6,56 @@ on:
       - master
 
 jobs:
-  defaults:
-    run:
-      working-directory: frontend/
   
-  build:
-    name: Build
+  build_server:
+    name: BuildServer
     runs-on: self-hosted
     strategy:
       matrix:
         node-version: [22.x]
-   
+     
+          #defaults:
+          #run:
+          #working-directory: backend/
+    
     steps:
-      - name: Checkout repo
+      - name: Checkout server files
+        uses: Bhacaz/checkout-files@v2
+        with:
+          files: backend/
+            #uses: actions/checkout@v4
+
+      - name: Setup Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+            # cache: 'yarn'
+      
+      - name: clear old modules & lock
+        run:  rm -rf node_modules *lock*
+
+      - name: Install dependencies & upgrade
+        run:  yarn install && yarn upgrade
+
+      - name: Build project
+        run:  yarn start
+  
+  build_client:
+    name: BuildClient
+    runs-on: self-hosted
+    strategy:
+      matrix:
+        node-version: [22.x]
+     
+    defaults:
+      run:
+        working-directory: frontend/
+    
+    steps:
+      - name: Checkout client files
+        uses: Bhacaz/checkout-files@v2
+        with:
+          files: frontend/
         uses: actions/checkout@v4
 
       - name: Setup Node ${{ matrix.node-version }}
@@ -29,15 +66,12 @@ jobs:
       
       - name: clear old modules & lock
         run:  rm -rf node_modules *lock*
-        working-directory: frontend/
 
       - name: Install dependencies & upgrade
         run:  yarn install && yarn upgrade
-        working-directory: frontend/
 
       - name: Build project
         run:  yarn run build
-        working-directory: frontend/
   
   deploy:
     name: Deploy

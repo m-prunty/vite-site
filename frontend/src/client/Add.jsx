@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../axiosConfig";
 import React from "react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -21,7 +21,7 @@ const Add = () => {
   const handleClick = async (e) => {
     e.preventDefault();
     try {
-      let res = await axios.post("http://localhost:8800/books/add", book);
+      let res = await axios.post("/books/add", book);
       console.log(res);
       //<BookDisplay />
       navigate("/books");

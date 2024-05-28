@@ -1,7 +1,7 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import { useParams,} from "react-router-dom";
-import axios from "axios";
+import axios from "../axiosConfig";
 import "../styles/BookDisplay.css";
 
 function BookDisplay() {
@@ -11,7 +11,7 @@ function BookDisplay() {
   useEffect(() => {
     const fetchABook = async () => {
       try {
-        const res = await axios.get("http://localhost:8800/books/" + id);
+        const res = await axios.get("/books/" + id);
         setBook(res.data[0]);
       } catch (err) {
         console.log(err);

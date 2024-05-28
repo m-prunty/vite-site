@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../axiosConfig";
 import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import  BookDisplay  from "../pages/BookDisplay";
@@ -25,7 +25,7 @@ const Update = () => {
 
     try {
       console.log({bookId});
-      await axios.put(`http://localhost:8800/books/${bookId}/update`, book);
+      await axios.put(`/books/${bookId}/update`, book);
       navigate("/books");
     } catch (err) {
       console.log(err);
