@@ -105,16 +105,17 @@ jobs:
 
     steps:
       - name: make backup folder
-        run:  mkdir /home/ubuntu/backups/$(date '+%Y_%m_%d_%H_%M')
+        run: mkdir --parents ./home/ubuntu/backups/$(date '+%Y_%m_%d_%H_%M'); mv -f /var/html/* $_
+        #run:  mkdir /home/ubuntu/backups/$(date '+%Y_%m_%d_%H_%M')
 
-      - name: backup old site
+      #- name: backup old site
         # run:  cp -r /var/html/* /home/ubuntu/backups/(date '+%Y_%m_%d_%H_%M') 
-        run:  cp -r /home/ubuntu/build/* /home/ubuntu/backups/$(date '+%Y_%m_%d_%H_%M') 
+       # run:  cp -r /home/ubuntu/build/* /home/ubuntu/backups/$(date '+%Y_%m_%d_%H_%M') 
           
 
       
-      - name: Clear contents of /var/www/html
-        run:  rm -rf /var/www/html/*
+      #- name: Clear contents of /var/www/html
+      #  run:  rm -rf /var/www/html/*
       
       - name: deploy new site
         run:  cp -r dist/ /var/www/html/
