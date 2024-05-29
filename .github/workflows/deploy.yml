@@ -102,16 +102,18 @@ jobs:
     name: Deploy
     needs: [build_client,build_server]
     runs-on: self-hosted
+    env:
+      home_dir: "./home/ubuntu/"
+      web_dir: "/var/www/html/*"
 
     steps:
       - name: make backup folder
 
-        run: if [ -d $distdir ];
-              then mkdir --parents "./home/ubuntu/backups/$Date_fd" && mv -f $distdir  "./home/ubuntu/backups/$Date_fd";
+        run: if [ -d $web_dir ];
+              then mkdir --parents "$home_dir/backups/$Date_fd" && mv -f $web_dir  "$home_dir/backups/$Date_fd";
               fi
         env:
           Date_fd: "$(date '+%Y_%m_%d_%H_%M')" 
-          distdir: "/var/www/html/*"
           #run:  mkdir /home/ubuntu/backups/$(date '+%Y_%m_%d_%H_%M')
 
       #- name: backup old site
@@ -124,6 +126,6 @@ jobs:
       #  run:  rm -rf /var/www/html/*
       
       - name: deploy new site
-        run:  cp -r /build/frontend/dist /var/www/html/
-      - run:  cd /home/ubuntu/build/backend & yarn start
+        run:  cp -r $home_dir/build/frontend/dist $web_dir 
+      - run:  cd $home_dir/build/backend & yarn start
 
