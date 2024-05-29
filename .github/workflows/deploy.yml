@@ -47,7 +47,9 @@ jobs:
         run:  rm -rf node_modules *lock*
 
       - name: Install dependencies & upgrade
-        run:  yarn install && yarn upgrade
+        run:  yarn install
+          
+          #&& yarn upgrade
 
           #      - name: Build project
           # run:  yarn prod 
@@ -84,7 +86,8 @@ jobs:
         run:  rm -rf node_modules *lock*
 
       - name: Install dependencies & upgrade
-        run:  yarn install && yarn upgrade
+        run:  yarn install
+          # && yarn upgrade
 
       - name: Build project
         run:  yarn run build
@@ -115,5 +118,5 @@ jobs:
       
       - name: deploy new site
         run:  cp -r dist/ /var/www/html/
-        run:  cd /home/ubuntu/build/backend & yarn start
+      - run:  cd /home/ubuntu/build/backend & yarn start
 
