@@ -74,6 +74,8 @@ jobs:
       - name: Build project
         run:  yarn run build
       
+      - name: move to Home
+        run: mv $(pwd)/dist $HOME/build/
           ## - name: move to Home
           ##run: mv -r ../frontend/ ~/build/client
         
@@ -83,6 +85,10 @@ jobs:
     needs: build_client
     runs-on: self-hosted
     
+    defaults:
+      run:
+        working-directory: $(HOME)/build
+
     steps:
       - name: make backup folder
         run:  mkdir /home/ubuntu/backups/$(date '+%Y_%m_%d_%H_%M')
@@ -94,5 +100,5 @@ jobs:
         run:  rm -rf /var/www/html/*
       
       - name: deploy new site
-        run:  cp -r ./frontend/dist/ /var/www/html/
+        run:  cp -r dist/ /var/www/html/
 
