@@ -13,8 +13,8 @@ jobs:
         
     steps:
       - name: check if last build is empty
-        run: rm -rf $(HOME)/lastbuild/*
-        ## && mv ./* $(HOME)/lastbuild/*
+        run: rm -rf /home/ubuntu/lastbuild/*
+        ## && mv ./* /home/ubuntu//lastbuild/*
     
   
   build_server:
@@ -50,9 +50,9 @@ jobs:
           #      - name: Build project
           # run:  yarn prod 
       
-      - name: move to $(HOME)
-        #run: run: rm -rf $(HOME)/lastbuild/* & mv $(HOME)./* lastbuild/* 
-        run: mv (pwd)(pwd) (HOME)/build/server
+      - name: move to /home/ubuntu/
+        #run: run: rm -rf (HOME)/lastbuild/* & mv(HOME)/lastbuild/* & mv (HOME)./* lastbuild/* 
+        run: mv /home/ubuntu//build/server
 
   build_client:
     name: BuildClient
@@ -87,9 +87,9 @@ jobs:
       - name: Build project
         run:  yarn run build
       
-      - name: move to $(HOME)
-        run: mv -f (pwd)/lastBuild && mv (pwd)/dist(pwd)/lastBuild && mv (pwd)/dist (HOME)/build/
-          ## - name: move to $(HOME)
+      - name: move to build
+        run: mv -f /home/ubuntu/build/
+          ## - name: move to /home/ubuntu/
           ##run: mv -r ../frontend/ ~/build/client
         
   
@@ -100,14 +100,14 @@ jobs:
     
     defaults:
       run:
-        working-directory: $$(HOME)/build
+        working-directory: $/home/ubuntu//build
 
     steps:
       - name: make backup folder
-        run:  mkdir /$(HOME)/ubuntu/backups/$(date '+%Y_%m_%d_%H_%M')
+        run:  mkdir /home/ubuntu/backups/$(date '+%Y_%m_%d_%H_%M')
 
       - name: backup old site
-        run:  cp -r /var/www/html/* /$(HOME)/ubuntu/backups/$(date '+%Y_%m_%d_%H_%M') 
+        run:  cp -r /var/www/html/* /home/ubuntu/backups/$(date '+%Y_%m_%d_%H_%M') 
       
       - name: Clear contents of /var/www/html
         run:  rm -rf /var/www/html/*
