@@ -12,9 +12,9 @@ jobs:
     runs-on: self-hosted
         
     steps:
-      - name: mv last build to folder
-        run: mv -f /home/ubuntu/build/* /home/ubuntu/build/lastbuild/
-      - run: rm -rf /home/ubuntu/build/lastbuild/*
+  #    - name: mv last build to folder
+  #      run: mv -f /home/ubuntu/build/* /home/ubuntu/build/lastbuild/
+      - run: rm -rf /home/ubuntu/build/*
         ##run: mkdir build/
         ## && mv ./* /home/ubuntu//lastbuild/*
     
