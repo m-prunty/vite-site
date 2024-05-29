@@ -105,7 +105,7 @@ jobs:
 
     steps:
       - name: make backup folder
-        run: mkdir --parents ./home/ubuntu/backups/$(date '+%Y_%m_%d_%H_%M'); mv -f /var/html/* $_
+        run: mkdir --parents ./home/ubuntu/backups/$(date '+%Y_%m_%d_%H_%M') && mv -f /var/html/* $_
         #run:  mkdir /home/ubuntu/backups/$(date '+%Y_%m_%d_%H_%M')
 
       #- name: backup old site
