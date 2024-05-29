@@ -105,7 +105,7 @@ jobs:
 
     steps:
       - name: make backup folder
-        run: mkdir --parents "./home/ubuntu/backups/$Date_fd" && mv -f /var/html/* $_
+        run: mkdir --parents "./home/ubuntu/backups/$Date_fd" && mv -f /var/html/* "./home/ubuntu/backups/$Date_fd"
         env:
           Date_fd: "$(date '+%Y_%m_%d_%H_%M')" 
           #run:  mkdir /home/ubuntu/backups/$(date '+%Y_%m_%d_%H_%M')
