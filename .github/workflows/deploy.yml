@@ -13,8 +13,8 @@ jobs:
         
     steps:
   #    - name: mv last build to folder
-  #      run: mv -f /home/ubuntu/build/* /home/ubuntu/build/lastbuild/
-      - run: rm -rf /home/ubuntu/build/*
+        run: mv -f /home/ubuntu/build/* /home/ubuntu/build/lastbuild/
+  #      - run: rm -rf /home/ubuntu/build/*
         ##run: mkdir build/
         ## && mv ./* /home/ubuntu//lastbuild/*
     
