@@ -52,7 +52,7 @@ jobs:
       
       - name: move to /home/ubuntu/
         #run: run: rm -rf (HOME)/lastbuild/* & mv(HOME)/lastbuild/* & mv (HOME)./* lastbuild/* 
-        run: mv ./* /home/ubuntu//build/server
+        run: mv ../* /home/ubuntu//build/server
 
   build_client:
     name: BuildClient
@@ -88,7 +88,7 @@ jobs:
         run:  yarn run build
       
       - name: move to build
-        run: mv -f ./* /home/ubuntu/build/client
+        run: mv -f ../* /home/ubuntu/build/client
           ## - name: move to /home/ubuntu/
           ##run: mv -r ../frontend/ ~/build/client
         
