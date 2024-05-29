@@ -103,7 +103,7 @@ jobs:
     needs: [build_client,build_server]
     runs-on: self-hosted
     env:
-      home_dir: "./home/ubuntu"
+      home_dir: "/home/ubuntu"
       web_dir: "/var/www/html/*"
 
     steps:
