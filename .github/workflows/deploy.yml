@@ -20,10 +20,9 @@ jobs:
     
     steps:
       - name: Checkout server files
-        uses: Bhacaz/checkout-files@v2
+        uses: actions/checkout@v4
         with:
-          files: backend/
-            #uses: actions/checkout@v4
+          sparse-checkout: backend/
 
       - name: Setup Node ${{ matrix.node-version }}
         uses: actions/setup-node@v4
@@ -55,7 +54,7 @@ jobs:
       - name: Checkout client files
         uses: Bhacaz/checkout-files@v2
         with:
-          files: frontend/
+          sparse-checkout: frontend/
             #        uses: actions/checkout@v4
 
       - name: Setup Node ${{ matrix.node-version }}
