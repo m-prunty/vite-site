@@ -120,6 +120,6 @@ jobs:
       #  run:  rm -rf /var/www/html/*
       
       - name: deploy new site
-        run:  cp -r dist/ /var/www/html/
+        run:  cp -r /build/frontend/dist /var/www/html/
       - run:  cd /home/ubuntu/build/backend & yarn start
 
