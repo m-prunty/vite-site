@@ -13,7 +13,8 @@ jobs:
         
     steps:
       - name: check if last build is empty
-        run: rm -rf /home/ubuntu/lastbuild/*
+        run: rm -rf /home/ubuntu/build/lastbuild/*
+        ##run: mkdir build/
         ## && mv ./* /home/ubuntu//lastbuild/*
     
   
@@ -52,7 +53,7 @@ jobs:
       
       - name: move to /home/ubuntu/
         #run: run: rm -rf (HOME)/lastbuild/* & mv(HOME)/lastbuild/* & mv (HOME)./* lastbuild/* 
-        run: mv -f ../* /home/ubuntu//build/server
+        run: mv -f ../* /home/ubuntu//build/
 
   build_client:
     name: BuildClient
@@ -88,7 +89,7 @@ jobs:
         run:  yarn run build
       
       - name: move to build
-        run: mv -f ../* /home/ubuntu/build/client
+        run: mv -f ../* /home/ubuntu/build/
           ## - name: move to /home/ubuntu/
           ##run: mv -r ../frontend/ ~/build/client
         
