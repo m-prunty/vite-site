@@ -37,7 +37,7 @@ jobs:
         run:  yarn install && yarn upgrade
 
       - name: Build project
-        run:  yarn start
+        run:  yarn prod 
   
   build_client:
     name: BuildClient
