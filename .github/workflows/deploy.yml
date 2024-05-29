@@ -10,11 +10,10 @@ jobs:
   back_up_Clean:
     name: Backup and Clean
     runs-on: self-hosted
-    define: &build_fd '/home/ubuntu/build'
         
     steps:
       - name: check if last build is empty
-        run: rm -rf *build_fd/lastbuild/* & mv ./* *build_fd/lastbuild/*
+        run: rm -rf HOME/lastbuild/* & mv ./* *HOME/lastbuild/*
     
   
   build_server:
