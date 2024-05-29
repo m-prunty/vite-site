@@ -16,10 +16,8 @@ jobs:
         working-directory: $(HOME)/build
         
     steps:
-      - name: check if lastbuild is empty
-        run: rm -rf lastbuild/* && mv ./* lastbuild/ 
-      
-  
+      - name: check if last build is empty
+        run: rm -rf lastbuild/* & mv /* lastbuild/*
     
   
   build_server:
