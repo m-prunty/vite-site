@@ -13,7 +13,8 @@ jobs:
         
     steps:
       - name: check if last build is empty
-        run: rm -rf HOME/lastbuild/* && mv ./* HOME/lastbuild/*
+        run: rm -rf HOME/lastbuild/*
+        ## && mv ./* HOME/lastbuild/*
     
   
   build_server:
