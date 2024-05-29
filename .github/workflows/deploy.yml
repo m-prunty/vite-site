@@ -1,123 +1,123 @@
 name: Deploy
 
-on:
-  push:
-    branches:
-      - master
+  on:
+    push:
+      branches:
+        - master
 
-jobs:
+  jobs:
 
-  back_up_Clean:
-    name: Backup and Clean
-    runs-on: self-hosted
-        
-    steps:
-  #    - name: mv last build to folder
-        run: mv -f /home/ubuntu/build/* /home/ubuntu/build/lastbuild/
-  #      - run: rm -rf /home/ubuntu/build/*
-        ##run: mkdir build/
-        ## && mv ./* /home/ubuntu//lastbuild/*
-    
-  
-  build_server:
-    name: BuildServer
-    needs: back_up_Clean
-    runs-on: self-hosted
-    strategy:
-      matrix:
-        node-version: [22.x]
-     
-    defaults:
-      run:
-        working-directory: backend/
-    
-    steps:
-      - name: Checkout server files
-        uses: actions/checkout@v4
-        with:
-          sparse-checkout: backend/
-
-      - name: Setup Node ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-            # cache: 'yarn'
-      
-      - name: clear old modules & lock
-        run:  rm -rf node_modules *lock*
-
-      - name: Install dependencies & upgrade
-        run:  yarn install
+    back_up_Clean:
+      name: Backup and Clean
+      runs-on: self-hosted
           
-          #&& yarn upgrade
-
-          #      - name: Build project
-          # run:  yarn prod 
+      steps:
+    #    - name: mv last build to folder
+          run: mv -f /home/ubuntu/build/* /home/ubuntu/build/lastbuild/
+    #      - run: rm -rf /home/ubuntu/build/*
+          ##run: mkdir build/
+          ## && mv ./* /home/ubuntu//lastbuild/*
       
-      - name: move to /home/ubuntu/
-        #run: run: rm -rf (HOME)/lastbuild/* & mv(HOME)/lastbuild/* & mv (HOME)./* lastbuild/* 
-        run: mv -f ../* /home/ubuntu//build/
-
-  build_client:
-    name: BuildClient
-    needs: back_up_Clean
-    runs-on: self-hosted
-    strategy:
-      matrix:
-        node-version: [22.x]
-     
-    defaults:
-      run:
-        working-directory: frontend/
     
-    steps:
-      - name: Checkout client files
-        uses: actions/checkout@v4
-        with:
-          sparse-checkout: frontend/
-
-      - name: Setup Node ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-            # cache: 'yarn'
+    build_server:
+      name: BuildServer
+      needs: back_up_Clean
+      runs-on: self-hosted
+      strategy:
+        matrix:
+          node-version: [22.x]
+       
+      defaults:
+        run:
+          working-directory: backend/
       
-      - name: clear old modules & lock
-        run:  rm -rf node_modules *lock*
+      steps:
+        - name: Checkout server files
+          uses: actions/checkout@v4
+          with:
+            sparse-checkout: backend/
 
-      - name: Install dependencies & upgrade
-        run:  yarn install
-          # && yarn upgrade
-
-      - name: Build project
-        run:  yarn run build
-      
-      - name: move to build
-        run: mv -f ../* /home/ubuntu/build/
-          ## - name: move to /home/ubuntu/
-          ##run: mv -r ../frontend/ ~/build/client
+        - name: Setup Node ${{ matrix.node-version }}
+          uses: actions/setup-node@v4
+          with:
+            node-version: ${{ matrix.node-version }}
+              # cache: 'yarn'
         
-  
-  deploy:
-    name: Deploy
-    needs: [build_client,build_server]
-    runs-on: self-hosted
+        - name: clear old modules & lock
+          run:  rm -rf node_modules *lock*
 
-    steps:
-      - name: make backup folder
-        run: mkdir --parents ./home/ubuntu/backups/$(date '+%Y_%m_%d_%H_%M') && mv -f /var/html/* $_
-        #run:  mkdir /home/ubuntu/backups/$(date '+%Y_%m_%d_%H_%M')
+        - name: Install dependencies & upgrade
+          run:  yarn install
+            
+            #&& yarn upgrade
 
-      #- name: backup old site
-        # run:  cp -r /var/html/* /home/ubuntu/backups/(date '+%Y_%m_%d_%H_%M') 
-       # run:  cp -r /home/ubuntu/build/* /home/ubuntu/backups/$(date '+%Y_%m_%d_%H_%M') 
+            #      - name: Build project
+            # run:  yarn prod 
+        
+        - name: move to /home/ubuntu/
+          #run: run: rm -rf (HOME)/lastbuild/* & mv(HOME)/lastbuild/* & mv (HOME)./* lastbuild/* 
+          run: mv -f ../* /home/ubuntu//build/
+
+    build_client:
+      name: BuildClient
+      needs: back_up_Clean
+      runs-on: self-hosted
+      strategy:
+        matrix:
+          node-version: [22.x]
+       
+      defaults:
+        run:
+          working-directory: frontend/
+      
+      steps:
+        - name: Checkout client files
+          uses: actions/checkout@v4
+          with:
+            sparse-checkout: frontend/
+
+        - name: Setup Node ${{ matrix.node-version }}
+          uses: actions/setup-node@v4
+          with:
+            node-version: ${{ matrix.node-version }}
+              # cache: 'yarn'
+        
+        - name: clear old modules & lock
+          run:  rm -rf node_modules *lock*
+
+        - name: Install dependencies & upgrade
+          run:  yarn install
+            # && yarn upgrade
+
+        - name: Build project
+          run:  yarn run build
+        
+        - name: move to build
+          run: mv -f ../* /home/ubuntu/build/
+            ## - name: move to /home/ubuntu/
+            ##run: mv -r ../frontend/ ~/build/client
           
+    
+    deploy:
+      name: Deploy
+      needs: [build_client,build_server]
+      runs-on: self-hosted
 
-      
-      #- name: Clear contents of /var/www/html
-      #  run:  rm -rf /var/www/html/*
-      
-      - name: deploy new site
-        run:  cp -r dist/ /var/www/html/
-      - run:  cd /home/ubuntu/build/backend & yarn start
+      steps:
+        - name: make backup folder
+          run: $DTE="$(date '+%Y_%m_%d_%H_%M')" && mkdir --parents ./home/ubuntu/backups/$DTE && mv -f /var/html/* $_
+          #run:  mkdir /home/ubuntu/backups/$(date '+%Y_%m_%d_%H_%M')
+
+        #- name: backup old site
+          # run:  cp -r /var/html/* /home/ubuntu/backups/(date '+%Y_%m_%d_%H_%M') 
+         # run:  cp -r /home/ubuntu/build/* /home/ubuntu/backups/$(date '+%Y_%m_%d_%H_%M') 
+            
+
+        
+        #- name: Clear contents of /var/www/html
+        #  run:  rm -rf /var/www/html/*
+        
+        - name: deploy new site
+          run:  cp -r dist/ /var/www/html/
+        - run:  cd /home/ubuntu/build/backend & yarn start
 
