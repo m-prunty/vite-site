@@ -36,9 +36,12 @@ jobs:
       - name: Install dependencies & upgrade
         run:  yarn install && yarn upgrade
 
-      - name: Build project
-        run:  yarn prod 
-  
+          #      - name: Build project
+          # run:  yarn prod 
+      
+      - name: move to Home
+        run: mv backend ~/build/server
+
   build_client:
     name: BuildClient
     runs-on: self-hosted
@@ -70,6 +73,10 @@ jobs:
 
       - name: Build project
         run:  yarn run build
+      
+          ## - name: move to Home
+          ##run: mv -r ../frontend/ ~/build/client
+        
   
   deploy:
     name: Deploy
