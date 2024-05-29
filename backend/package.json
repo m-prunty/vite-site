@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js && exit 1",
+    "start": "nodemon server.js && exit 1",
     "prod": "export NODE_ENV=PRODUCTION && node server"
   },
   "author": "",
@@ -15,7 +15,7 @@
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
     "express": "^4.19.2",
-    "mysql": "^2.18.1",
+    "mysql2": "^3.9.9",
     "nodemon": "^3.1.0"
   }
 }
