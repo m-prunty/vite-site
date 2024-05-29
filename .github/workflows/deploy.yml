@@ -98,10 +98,6 @@ jobs:
     name: Deploy
     needs: [build_client,build_server]
     runs-on: self-hosted
-    
-    defaults:
-      run:
-        working-directory: $/home/ubuntu//build
 
     steps:
       - name: make backup folder
