@@ -127,5 +127,5 @@ jobs:
       
       - name: deploy new site
         run:  cp -r $home_dir/build/frontend/dist $web_dir 
-      - run:  cd $home_dir/build/backend & yarn start
+      - run:  cd $home_dir/build/backend && yarn start
 
