@@ -27,7 +27,7 @@ jobs:
         run: mkdir --parents $home_dir/backups/$date_fd 
       - run: mv  $build_fd/*  $home_dir/backups/$date_fd/ || echo "no files in build";
       - name: Copy md from old site
-        run:  cp $home_dir/backups/$date_fd/frontend/dist/*.md $build_fd/dist/;
+        run:  cp $home_dir/backups/$date_fd/frontend/dist/*.md $build_fd/;
       
       - name: Clean up node_modules;
         run: rm -rf $home_dir/backups/$date_fd/frontend/node_modules && rm -rf $home_dir/backups/$date_fd/backend/node_modules
