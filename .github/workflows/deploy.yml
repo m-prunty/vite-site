@@ -101,11 +101,11 @@ jobs:
     restart_servers:
       name: Restart Servers
       needs: build_client && build_server
-    runs-on: self-hosted
-      - name: Restart Syncthing
-        run: ! systemctl is-active syncthing && sudo systemctl start syncthing
-      - name: Restart nodeserver
-        run: ! systemctl is-active nodeserver && sudo systemctl start nodeserver 
+      runs-on: self-hosted
+        - name: Restart Syncthing
+          run: ! systemctl is-active syncthing && sudo systemctl start syncthing
+        - name: Restart nodeserver
+          run: ! systemctl is-active nodeserver && sudo systemctl start nodeserver 
           # deploy:
           #   name: Deploy
           #   needs: [build_client,build_server]
