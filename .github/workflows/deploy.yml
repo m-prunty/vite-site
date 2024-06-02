@@ -104,9 +104,9 @@ jobs:
     runs-on: self-hosted
     steps:
       - name: Restart Syncthing
-        run: ! systemctl is-active syncthing && sudo systemctl start syncthing
+        run: if ( ! systemctl is-active syncthing ) ; then sudo systemctl start syncthing; fi
       - name: Restart nodeserver
-        run: ! systemctl is-active nodeserver && sudo systemctl start nodeserver 
+        run: if ( ! systemctl is-active nodeserver ) ; then  sudo systemctl start nodeserver; fi 
           # deploy:
           #   name: Deploy
           #   needs: [build_client,build_server]
