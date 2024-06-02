@@ -98,15 +98,15 @@ jobs:
       - name: move to build
         run: mv -f ../* /home/ubuntu/build/
         
-    restart_servers:
-      name: Restart Servers
-      needs: build_client && build_server
-      runs-on: self-hosted
-      steps:
-        - name: Restart Syncthing
-          run: ! systemctl is-active syncthing && sudo systemctl start syncthing
-        - name: Restart nodeserver
-          run: ! systemctl is-active nodeserver && sudo systemctl start nodeserver 
+  restart_servers:
+    name: Restart Servers
+    needs: build_client && build_server
+    runs-on: self-hosted
+    steps:
+      - name: Restart Syncthing
+        run: ! systemctl is-active syncthing && sudo systemctl start syncthing
+      - name: Restart nodeserver
+        run: ! systemctl is-active nodeserver && sudo systemctl start nodeserver 
           # deploy:
           #   name: Deploy
           #   needs: [build_client,build_server]
