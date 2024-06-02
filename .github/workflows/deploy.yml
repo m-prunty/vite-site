@@ -11,8 +11,6 @@ jobs:
     name: Backup and Clean
     runs-on: self-hosted
     env:
-      #date_fd: !timestamp '2023-02-07T08:30:00Z'
-        #$(date '+%Y_%m_%d_%H_%M') 
       home_dir: /home/ubuntu
       build_fd: /home/ubuntu/build
         
@@ -22,13 +20,12 @@ jobs:
       - name: Disable Syncthing
         run: ( ! (systemctl is-active syncthing && sudo systemctl stop syncthing && systemctl is-active syncthing)); 
       - name: Disable nodeserver
-        run:  ( ! (systemctl is-active nodeserver && sudo systemctl stop syncthing && systemctl is-active syncthing))
+        run:  ( ! (systemctl is-active nodeserver && sudo systemctl stop nodeserver && systemctl is-active nodeserver))
       - name: Backup build folder  
         run: mkdir --parents $home_dir/backups/$date_fd 
       - run: mv  $build_fd/*  $home_dir/backups/$date_fd/ || echo "no files in build";
       - name: Copy md from old site
         run:  cp $home_dir/backups/$date_fd/frontend/dist/*.md $build_fd/ || echo "no md found in most recent bacup";
-      
       - name: Clean up node_modules;
         run: rm -rf $home_dir/backups/$date_fd/frontend/node_modules && rm -rf $home_dir/backups/$date_fd/backend/node_modules
   
@@ -110,24 +107,3 @@ jobs:
         run: if ( ! systemctl is-active syncthing ) ; then sudo systemctl start syncthing; fi
       - name: Restart nodeserver
         run: if ( ! systemctl is-active nodeserver ) ; then  sudo systemctl start nodeserver; fi 
-          # deploy:
-          #   name: Deploy
-          #   needs: [build_client,build_server]
-          #   runs-on: self-hosted
-          #   env:
-          #     home_dir: "/home/ubuntu"
-          #     web_dir: "/var/www/html"
-
-          #   steps:
-      #- name: make backup folder
-
-      # run: if [ -d $web_dir ];
-      #        then mkdir --parents "$home_dir/backups/$Date_fd" && mv -f $web_dir/*  "$home_dir/backups/$Date_fd";
-      #        fi
-      #  env:
-      #    Date_fd: "$(date '+%Y_%m_%d_%H_%M')" 
-      
-            #- name: deploy new site
-        #        run:  cp -r $home_dir/build/frontend/dist $web_dir/* 
-          # - run:  cd $home_dir/build/backend && yarn start
-
