@@ -63,7 +63,7 @@ app.delete("/books/:id", (req, res) => {
 });
 
 app.get('/books/addsearch', async (req, res) => {
-  console.log("test")
+  console.log(req)
 });
 
 app.get('/books/olsearch', async (req, res) => {

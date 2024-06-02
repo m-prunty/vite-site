@@ -20,7 +20,7 @@ function BookDisplay() {
     fetchABook();
   }, []);
 
-  //console.log(book)
+  console.log(book)
   return (
     <div className="project">
       <h1> {book.booktitle}</h1>

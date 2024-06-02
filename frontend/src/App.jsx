@@ -20,11 +20,7 @@ function BookStore(){
       </div>
   );
 }
-          {/*
-        <li><Link to="/products/electronics">Electronics</Link></li>
-        <li><Link to="/products/clothing">Clothing</Link></li>
-        <li><Link to="/products/books">Books</Link></li>
-          */}
+
 function App() {
   return (
     <div className="App">
@@ -40,7 +36,7 @@ function App() {
             <Route path=":id" element={<BookDisplay />} />
             <Route path="add" element={<Add />} />
             <Route path=":id/update" element={<Update />} />
-            <Route path="addSearch" element={<AddSearch />} />
+            <Route path="addsearch" element={<AddSearch />} />
           </Route>
           {//          <Route path="/projects" element={<Projects />} />
           //<Route path="/project/:id" element={<ProjectDisplay />} />

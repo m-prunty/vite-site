@@ -7,7 +7,6 @@ import BookItem from "../components/BookItem";
 import "../styles/Books.css";
 
 const Books = () => {
-  //let bks = bks ? bks : [{}]
   const [books, setBooks] = useState();
 
   console.log(books);
@@ -18,6 +17,7 @@ const Books = () => {
         setBooks(res.data);
       } catch (err) {
         console.log(err);
+        setBooks([{booktitle: "Nodeserver failed"}]);
       }
     };
     fetchAllBooks();
@@ -34,12 +34,12 @@ const Books = () => {
       console.log(err);
     }
   };
+       // <Link to="update">Account</Link>
 return (
      <div className="books">
        <h1> All Books </h1>
       <nav className="bookList">
         <Link to="add">Add New Book</Link>
-        <Link to="update">Account</Link>
       </nav>
 
        <div className="bookList">

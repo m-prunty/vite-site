@@ -7,32 +7,39 @@ import Books from "./Books";
 
 //{ const [book, setBook] = useState({
 const AddSearch = () => {
-  const [book, setBook] = useState();
+  
+  const [books, setBooks] = useState([]);
+  const [query, setQuery] = useState({});
 
-  useEffect(() => {
-    const searchBooks = async () => {
-      try {
-        const res = await axios.get("https://openlibrary.org/search.json?", bk);
-        console.log(res.data);
-        //setBooks(res.data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    searchBooks();
+  const handleChange = (e) => {
+    setQuery((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+  
+const searchBooks = async () => {
+  try {
+    const q = {q : query.author, title : query.title} 
+    console.log(q)
+    const res = await axios.get("/books/olsearch", {params : q});
+    console.log(res.data);
+  //  setBooks(res.data);
+  } catch (err) {
+    console.log(err);
+  }
+};
+useEffect(() => {
+  searchBooks();
 }, []);
 
-  return(
-      <div className="form">
-        <h1>Add New Book</h1>
-        <input
+return(
+    <div className="form">
+      <h1>Add New Book</h1>
+      <input
           type="text"
           placeholder="Book title"
-          name="booktitle"
+          name="title"
           onChange={handleChange}
         />
-        <textarea
-          rows={5}
+        <input
           type="text"
           placeholder="Book author"
           name="author"
@@ -50,14 +57,11 @@ const AddSearch = () => {
           name="bookid"
           onChange={handleChange}
         />
-        <button onClick={handleClick}>Add</button>
+        <button onClick={searchBooks}>Add</button>
       </div>
     );
   };
 
 
-//quantityinstock: null,
-//bookid: null,
-// })}}
 export default AddSearch;
 

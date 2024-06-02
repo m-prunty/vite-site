@@ -62,13 +62,10 @@ app.delete("/books/:id", (req, res) => {
   });
 });
 
-app.get('/books/addsearch', async (req, res) => {
-  console.log("test")
-});
-
 app.get('/books/olsearch', async (req, res) => {
   console.log(req)
 
+	console.log(req)
   try {
 	console.log(req)
     const response = await axios.get('https://openlibrary.org/search.json', { params: req });

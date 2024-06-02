@@ -10,14 +10,20 @@ jobs:
   back_up_Clean:
     name: Backup and Clean
     runs-on: self-hosted
+    env:
+      date_fd: "$(date '+%Y_%m_%d_%H_%M')" 
+      home_dir: "/home/ubuntu"
+      build_fd: "$home_dir/build"
         
     steps:
-  #    - name: mv last build to folder
-  #      run: mv -f /home/ubuntu/build/* /home/ubuntu/build/lastbuild/
-        - run: rm -rf /home/ubuntu/build/*
-        ##run: mkdir build/
-        ## && mv ./* /home/ubuntu//lastbuild/*
-    
+
+      - name: Backup build folder  
+        run: mkdir --parents $home_dir/backups/$Date_fd && mv -f $build_fd/*  $home_dir/backups/$Date_fd;
+      - name: Copy md from old site
+        run:  cp $home_dir/backups/$Date_fd/frontend/dist/*.md $build_fd/dist/;
+      
+      - name: Clean up node_modules;
+        run: rm -rf $home_dir/backups/$Date_fd/frontend/node_modules && rm -rf $home_dir/backups/$Date_fd/backend/node_modules
   
   build_server:
     name: BuildServer
@@ -41,22 +47,15 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-            # cache: 'yarn'
       
       - name: clear old modules & lock
         run:  rm -rf node_modules *lock*
 
-      - name: Install dependencies & upgrade
+      - name: Install dependencies 
         run:  yarn install
-          
-          #&& yarn upgrade
-
-          #      - name: Build project
-          # run:  yarn prod 
       
-      - name: move to /home/ubuntu/
-        #run: run: rm -rf (HOME)/lastbuild/* & mv(HOME)/lastbuild/* & mv (HOME)./* lastbuild/* 
-        run: mv -f ../* /home/ubuntu//build/
+      - name: move to home build folder
+        run: mv -f ../* /home/ubuntu/build/
 
   build_client:
     name: BuildClient
@@ -94,38 +93,26 @@ jobs:
       
       - name: move to build
         run: mv -f ../* /home/ubuntu/build/
-          ## - name: move to /home/ubuntu/
-          ##run: mv -r ../frontend/ ~/build/client
         
   
-  deploy:
-    name: Deploy
-    needs: [build_client,build_server]
-    runs-on: self-hosted
-    env:
-      home_dir: "/home/ubuntu"
-      web_dir: "/var/www/html/*"
+          # deploy:
+          #   name: Deploy
+          #   needs: [build_client,build_server]
+          #   runs-on: self-hosted
+          #   env:
+          #     home_dir: "/home/ubuntu"
+          #     web_dir: "/var/www/html"
 
-    steps:
-      - name: make backup folder
+          #   steps:
+      #- name: make backup folder
 
-        run: if [ -d $web_dir ];
-              then mkdir --parents "$home_dir/backups/$Date_fd" && mv -f $web_dir  "$home_dir/backups/$Date_fd";
-              fi
-        env:
-          Date_fd: "$(date '+%Y_%m_%d_%H_%M')" 
-          #run:  mkdir /home/ubuntu/backups/$(date '+%Y_%m_%d_%H_%M')
-
-      #- name: backup old site
-        # run:  cp -r /var/html/* /home/ubuntu/backups/(date '+%Y_%m_%d_%H_%M') 
-       # run:  cp -r /home/ubuntu/build/* /home/ubuntu/backups/$(date '+%Y_%m_%d_%H_%M') 
-          
-
+      # run: if [ -d $web_dir ];
+      #        then mkdir --parents "$home_dir/backups/$Date_fd" && mv -f $web_dir/*  "$home_dir/backups/$Date_fd";
+      #        fi
+      #  env:
+      #    Date_fd: "$(date '+%Y_%m_%d_%H_%M')" 
       
-      #- name: Clear contents of /var/www/html
-      #  run:  rm -rf /var/www/html/*
-      
-      - name: deploy new site
-        run:  cp -r $home_dir/build/frontend/dist $web_dir 
+            #- name: deploy new site
+        #        run:  cp -r $home_dir/build/frontend/dist $web_dir/* 
           # - run:  cd $home_dir/build/backend && yarn start
 
