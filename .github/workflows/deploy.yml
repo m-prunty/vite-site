@@ -102,6 +102,7 @@ jobs:
       name: Restart Servers
       needs: build_client && build_server
       runs-on: self-hosted
+      steps:
         - name: Restart Syncthing
           run: ! systemctl is-active syncthing && sudo systemctl start syncthing
         - name: Restart nodeserver
