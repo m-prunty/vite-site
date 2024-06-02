@@ -1,5 +1,6 @@
-import express from "express"
-import mysql from "mysql2"
+import express from "express";
+import axios from "axios";
+import mysql from "mysql2";
 import "./addRequire.js";
 
 //import bodyparser from "body-parser"
@@ -15,7 +16,6 @@ const db = mysql.createConnection({
         user:"website",
         password:"SQL_$1te_Pa$$",
         database:"book_store",
-
 });
 
 app.get("/", (req, res) => { 
@@ -27,7 +27,6 @@ app.get("/books", (req, res) => {
 	db.query(q, (err,data) => {
 		return err ? res.json(err) : res.json(data);
 	});
-
 });
 
 app.post("/books/add", (req, res) => {
@@ -62,16 +61,16 @@ app.delete("/books/:id", (req, res) => {
   });
 });
 
-app.get('/books/addsearch', async (req, res) => {
+app.get('/books/addSearch', async (req, res) => {
   console.log("test")
 });
 
-app.get('/books/olsearch', async (req, res) => {
+app.get('/books/olsearch?:q', async (req, res) => {
   console.log(req)
 
   try {
 	console.log(req)
-    const response = await axios.get('https://openlibrary.org/search.json', { params: req });
+    const response = await axios.get('https://openlibrary.org/search.json',   { params: req.params });
     res.json(response.data);
   } catch (error) {
     res.status(500).send(error.message);

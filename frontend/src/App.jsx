@@ -12,12 +12,13 @@ import Add from "./client/Add";
 import Update from "./client/Update";
 import AddSearch from "./client/AddSearch";
 
+const port_mysql = 8800
+
 function BookStore(){
   return (
-    <div><Outlet /> 
-      <Routes>
-      </Routes>
-      </div>
+    <div>
+      <Outlet /> 
+    </div>
   );
 }
 
@@ -38,9 +39,6 @@ function App() {
             <Route path=":id/update" element={<Update />} />
             <Route path="addsearch" element={<AddSearch />} />
           </Route>
-          {//          <Route path="/projects" element={<Projects />} />
-          //<Route path="/project/:id" element={<ProjectDisplay />} />
-          }
         </Routes>
         <Footer />
       </Router>
