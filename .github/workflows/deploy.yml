@@ -100,7 +100,7 @@ jobs:
         
   restart_servers:
     name: Restart Servers
-    needs: build_client && build_server
+    needs: [build_client, build_server]
     runs-on: self-hosted
     steps:
       - name: Restart Syncthing
