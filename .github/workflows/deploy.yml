@@ -13,13 +13,13 @@ jobs:
     env:
       date_fd: "$(date '+%Y_%m_%d_%H_%M')" 
       home_dir: "/home/ubuntu"
-      build_fd: "$home_dir/build"
+      build_fd: "/$home_dir/build"
         
     steps:
 
       - name: Backup build folder  
         run: mkdir --parents $home_dir/backups/$Date_fd 
-      - run: mv -f $build_fd/*  $home_dir/backups/$Date_fd;
+      - run: mv  $build_fd/*  $home_dir/backups/$Date_fd;
       - name: Copy md from old site
         run:  cp $home_dir/backups/$Date_fd/frontend/dist/*.md $build_fd/dist/;
       
