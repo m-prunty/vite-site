@@ -20,7 +20,7 @@ jobs:
       - name: set date
         run: echo "date_fd=$(date --rfc-3339=date)" >> ${GITHUB_ENV}
       - name: Disable Syncthing
-        run: systemctl is-active syncthing && sudo systemctl stop syncthing && systemctl is-active syncthing
+        run: systemctl is-active syncthing && (sudo systemctl stop syncthing && systemctl is-active syncthing) || NULL;
       - name: Disable nodeserver
         run:  systemctl is-active nodeserver && sudo systemctl stop nodeserver && systemctl is-active nodeserver
       - name: Backup build folder  
