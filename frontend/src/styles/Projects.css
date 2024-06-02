@@ -1,0 +1,74 @@
+.books {
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.books .bookTitle {
+  text-align: center;
+  color: #3e497a;
+  font-size: 60px;
+  font-weight: bolder;
+}
+
+.bookList {
+  width: 70vw;
+  height: auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  place-items: center;
+}
+
+/* MENU ITEM STYLING */
+
+.bookItem {
+  border-radius: 15px;
+  width: 300px;
+  height: 300px;
+  margin: 40px;
+  box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+.bookItem:hover {
+  box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.5);
+  transition: 0.3s ease-in;
+  cursor: pointer;
+}
+
+.bookItem .bgImage {
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  width: 100%;
+  height: 200px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.bookItem h1 {
+  font-size: 25px;
+}
+
+@media only screen and (max-width: 1300px) {
+  .bookList {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media only screen and (max-width: 800px) {
+  .bookList {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media only screen and (max-width: 800px) {
+  .bookList {
+    width: 100%;
+  }
+  .bookItem {
+    width: 300px;
+    height: 300px;
+  }
+}
