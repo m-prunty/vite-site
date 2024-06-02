@@ -25,7 +25,7 @@ jobs:
         run:  ( ! (systemctl is-active nodeserver && sudo systemctl stop syncthing && systemctl is-active syncthing))
       - name: Backup build folder  
         run: mkdir --parents $home_dir/backups/$date_fd 
-      - run: mv  $build_fd/*  $home_dir/backups/$date_fd/ ;
+      - run: mv  $build_fd/*  $home_dir/backups/$date_fd/ || echo "no files in build";
       - name: Copy md from old site
         run:  cp $home_dir/backups/$date_fd/frontend/dist/*.md $build_fd/dist/;
       
