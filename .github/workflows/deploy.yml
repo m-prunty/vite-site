@@ -18,13 +18,13 @@ jobs:
         
     steps:
       - name: set date
-        run: echo "date_fd=$(date --rfc-3339=date)" >> ${GITHUB_ENV}
+        run: "echo date_fd=$(date +%y%m%d%H%M)"  >> ${GITHUB_ENV}
       - name: Disable Syncthing
         run: ( ! (systemctl is-active syncthing && sudo systemctl stop syncthing && systemctl is-active syncthing)); 
       - name: Disable nodeserver
         run:  ( ! (systemctl is-active nodeserver && sudo systemctl stop syncthing && systemctl is-active syncthing))
       - name: Backup build folder  
-        run: mkdir --parents $home_dir/backups/$date_fd 
+        run: mkdir --parents $home_dir/backups/(date_fd 
       - run: mv  $build_fd/*  $home_dir/backups/$date_fd/ ;
       - name: Copy md from old site
         run:  cp $home_dir/backups/$Date_fd/frontend/dist/*.md $build_fd/dist/;
