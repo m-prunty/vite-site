@@ -11,15 +11,16 @@ jobs:
     name: Backup and Clean
     runs-on: self-hosted
     env:
-      date_fd: $(date '+%Y_%m_%d_%H_%M') 
+      date_fd: !timestamp '2023-02-07T08:30:00Z'
+        #$(date '+%Y_%m_%d_%H_%M') 
       home_dir: /home/ubuntu
       build_fd: /home/ubuntu/build
         
     steps:
       - name: Disable Syncthing
-        run: systemctl is-active syncthing && sudo systemctl stop syncthing
+        run: systemctl is-active syncthing && sudo systemctl stop syncthing && systemctl is-active syncthing
       - name: Disable nodeserver
-        run:  systemctl is-active nodeserver && sudo systemctl stop nodeserver 
+        run:  systemctl is-active nodeserver && sudo systemctl stop nodeserver && systemctl is-active nodeserver
       - name: Backup build folder  
         run: mkdir --parents $home_dir/backups/$Date_fd 
       - run: mv  $build_fd/*  $home_dir/backups/$Date_fd/ ;
