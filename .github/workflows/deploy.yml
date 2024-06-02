@@ -18,7 +18,8 @@ jobs:
     steps:
 
       - name: Backup build folder  
-        run: mkdir --parents $home_dir/backups/$Date_fd && mv -f $build_fd/*  $home_dir/backups/$Date_fd;
+        run: mkdir --parents $home_dir/backups/$Date_fd 
+      - run: mv -f $build_fd/*  $home_dir/backups/$Date_fd;
       - name: Copy md from old site
         run:  cp $home_dir/backups/$Date_fd/frontend/dist/*.md $build_fd/dist/;
       
