@@ -1,12 +1,11 @@
 // First we need to import axios.js
 import axios from 'axios';
 
-const port_sql = ":8800"
 
 // Next we make an 'instance' of it
 const instance = axios.create({
     // .. where we make our configurations
-    baseURL: "http://marcusprunty.co.uk",
+	baseURL: "http://marcusprunty.co.uk:8800",
 });
 
 // Where you would set stuff like your 'Authorization' header, etc ...

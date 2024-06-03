@@ -1,0 +1,992 @@
+./App.jsx
+import "./App.css";
+import { BrowserRouter as Router, Routes, Route, Outlet } from "react-router-dom";
+import Home from "./pages/Home";
+import About from "./pages/About";
+//import Projects from "./pages/Projects";
+import Experience from "./pages/Experience";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+import Books from "./client/Books";
+import BookDisplay from "./pages/BookDisplay"
+import Add from "./client/Add";
+import Update from "./client/Update";
+import AddSearch from "./client/AddSearch";
+
+const port_mysql = 8800
+
+function BookStore(){
+  return (
+    <div>
+      <Outlet /> 
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <div className="App">
+      <Router>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/experience" element={<Experience />} />
+          <Route path="/books/*" element={<BookStore />}>
+            <Route index element={<Books />} />
+            <Route path='*' element={<Books />} />
+            <Route path=":id" element={<BookDisplay />} />
+            <Route path="add" element={<Add />} />
+            <Route path=":id/update" element={<Update />} />
+            <Route path="addsearch" element={<AddSearch />} />
+          </Route>
+        </Routes>
+        <Footer />
+      </Router>
+    </div>
+  );
+}
+
+export default App;
+
+./helpers/ProjectList.jsx
+import Proj1 from "../assets/proj1.jpg";
+import Proj2 from "../assets/proj2.jpg";
+import Proj3 from "../assets/proj3.webp";
+import Proj4 from "../assets/proj4.webp";
+import Proj5 from "../assets/proj5.jpg";
+import Proj6 from "../assets/proj6.png";
+
+export const ProjectList = [
+  {
+    name: "Dijkstra Algorithm Visualizer",
+    image: Proj1,
+    skills: "JavaScript,HTML,CSS",
+  },
+  {
+    name: "Ecommerce Website",
+    image: Proj2,
+    skills: "React,Node.js,MongoDB",
+  },
+  {
+    name: "Spotify Clone",
+    image: Proj3,
+    skills: "React,Node.js,MongoDB,SpotifyAPI",
+  },
+  {
+    name: "Social Media Website",
+    image: Proj4,
+    skills: "React,Node.js,MySQL,GraphQL",
+  },
+  {
+    name: "Dashboard Visualizer",
+    image: Proj5,
+    skills: "JavaScript,HTML,CSS",
+  },
+  {
+    name: "Mobile Game",
+    image: Proj6,
+    skills: "React Native,JavaScript,HTML,CSS",
+  },
+];
+
+./reportWebVitals.jsx
+const reportWebVitals = onPerfEntry => {
+  if (onPerfEntry && onPerfEntry instanceof Function) {
+    import('web-vitals').then(({ getCLS, getFID, getFCP, getLCP, getTTFB }) => {
+      getCLS(onPerfEntry);
+      getFID(onPerfEntry);
+      getFCP(onPerfEntry);
+      getLCP(onPerfEntry);
+      getTTFB(onPerfEntry);
+    });
+  }
+};
+
+export default reportWebVitals;
+
+./axiosConfig.js
+// First we need to import axios.js
+import axios from 'axios';
+
+const port_sql = ":8800"
+
+// Next we make an 'instance' of it
+const instance = axios.create({
+    // .. where we make our configurations
+    baseURL: "http://marcusprunty.co.uk",
+});
+
+// Where you would set stuff like your 'Authorization' header, etc ...
+//instance.defaults.headers.common['Authorization'] = 'AUTH TOKEN FROM INSTANCE';
+
+// Also add/ configure i:`nterceptors && all the other cool stuff
+
+//instance.interceptors.request...
+
+export default instance;
+
+./client/AddSearch.jsx
+import axios from "../axiosConfig";
+import React from "react";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import Books from "./Books";
+
+
+//{ const [book, setBook] = useState({
+const AddSearch = () => {
+  
+  const [books, setBooks] = useState([]);
+  const [query, setQuery] = useState({});
+
+  const handleChange = (e) => {
+    setQuery((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+  
+const searchBooks = async () => {
+  try {
+    const q = {q : query.author, title : query.title} 
+    console.log(q)
+    const res = await axios.get("/books/olsearch", {params : q});
+    console.log(res.data);
+  //  setBooks(res.data);
+  } catch (err) {
+    console.log(err);
+  }
+};
+useEffect(() => {
+  searchBooks();
+}, []);
+
+return(
+    <div className="form">
+      <h1>Add New Book</h1>
+      <input
+          type="text"
+          placeholder="Book title"
+          name="title"
+          onChange={handleChange}
+        />
+        <input
+          type="text"
+          placeholder="Book author"
+          name="author"
+          onChange={handleChange}
+        />
+        <input
+          type="number"
+          placeholder="Book quantity"
+          name="quantityinstock"
+          onChange={handleChange}
+        />
+        <input
+          type="number"
+          placeholder="Book id"
+          name="bookid"
+          onChange={handleChange}
+        />
+        <button onClick={searchBooks}>Add</button>
+      </div>
+    );
+  };
+
+
+export default AddSearch;
+
+
+./client/Add.jsx
+import axios from "../axiosConfig";
+import React from "react";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+
+const Add = () => {
+  const [book, setBook] = useState({
+    booktitle: "",
+    author: "",
+    quantityinstock: null,
+    //bookid: null,
+  });
+  const [error,setError] = useState(false)
+
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setBook((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleClick = async (e) => {
+    e.preventDefault();
+    try {
+      let res = await axios.post("/books/add", book);
+      console.log(res);
+      //<BookDisplay />
+      navigate("/books");
+    } catch (err) {
+      console.log(err);
+      setError(true)
+    }
+  };
+
+  return (
+    <div>
+    <div className="form">
+      <h1>Add New Book</h1>
+      <input
+        type="text"
+        placeholder="Book title"
+        name="booktitle"
+        onChange={handleChange}
+      />
+      <textarea
+        rows={5}
+        type="text"
+        placeholder="Book author"
+        name="author"
+        onChange={handleChange}
+      />
+      <input
+        type="number"
+        placeholder="Book quantity"
+        name="quantityinstock"
+        onChange={handleChange}
+      />
+      <input
+        type="number"
+        placeholder="Book id"
+        name="bookid"
+        onChange={handleChange}
+      />
+      <button onClick={handleClick}>Add</button>
+      <Link to="/books">See all books</Link>
+      {error && "Something went wrong!"}
+    </div>
+    </div>
+  );
+};
+
+export default Add;
+
+./client/Update.jsx
+import axios from "../axiosConfig";
+import React, { useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import  BookDisplay  from "../pages/BookDisplay";
+
+const Update = () => {
+  const [book, setBook] = useState({
+    booktitle: "",
+    author: "",
+    quantityinstock: null,
+  });
+  const [error,setError] = useState(false)
+
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const bookId = location.pathname.split("/")[2];
+
+  const handleChange = (e) => {
+    setBook((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleClick = async (e) => {
+    e.preventDefault();
+
+    try {
+      console.log({bookId});
+      await axios.put(`/books/${bookId}/update`, book);
+      navigate("/books");
+    } catch (err) {
+      console.log(err);
+      setError(true);
+    }
+  };
+
+  return (
+    <div className="form">
+    <BookDisplay />
+      <h1>Update the Book</h1>
+      <input
+        type="text"
+        placeholder="Book title"
+        name="booktitle"
+        onChange={handleChange}
+      />
+      <textarea
+        rows={5}
+        type="text"
+        placeholder="Book desc"
+        name="author"
+        onChange={handleChange}
+      />
+      <input
+        type="number"
+        placeholder="Book price"
+        name="quantityinstock"
+        onChange={handleChange}
+      />
+      <p> {bookId}</p>
+      <button onClick={handleClick}>Update</button>
+      {error && "Something went wrong!"}
+      <Link to="/books">See all books</Link>
+    </div>
+  );
+};
+
+export default Update;
+
+./client/Books.jsx
+import React from "react";
+import { useEffect } from "react";
+import { useState } from "react";
+import axios from "../axiosConfig";
+import { Link } from "react-router-dom";
+import BookItem from "../components/BookItem";
+import "../styles/Books.css";
+
+const Books = () => {
+  const [books, setBooks] = useState();
+
+  console.log(books);
+  useEffect(() => {
+    const fetchAllBooks = async () => {
+      try {
+        const res = await axios.get("/books");
+        setBooks(res.data);
+      } catch (err) {
+        console.log(err);
+        setBooks([{booktitle: "Nodeserver failed"}]);
+      }
+    };
+    fetchAllBooks();
+  }, []);
+  
+
+  console.log(books);
+
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`/books/${id}`);
+      window.location.reload()
+    } catch (err) {
+      console.log(err);
+    }
+  };
+       // <Link to="update">Account</Link>
+return (
+     <div className="books">
+       <h1> All Books </h1>
+      <nav className="bookList">
+        <Link to="add">Add New Book</Link>
+      </nav>
+
+       <div className="bookList">
+        {books?.map((book, bookid ) => {
+          return (
+            <div key={book.bookid}>
+              <BookItem  book={book} /> 
+            </div>
+               );
+         })}
+       </div>
+     </div>
+   );
+
+  {/*  return (
+    <div>
+      <h1>Lama Book Shop</h1>
+      <nav>
+        <Link to="add">Profile</Link>
+        <Link to="update">Account</Link>
+      </nav>
+
+      <div className="books">
+        {books.map((book) => (
+          <div key={book.bookid} className="book">
+            {//<img src={book.cover} alt="" />
+            }
+            <h2>{book.booktitle}</h2>
+            <h3>{book.author}</h3>
+                {//<p>{book.desc}</p>
+                  }
+            <span>${book.quantityinstock}</span>
+            <button className="delete" onClick={() => handleDelete(book.bookid)}>Delete</button>
+            <button className="update">
+              <Link
+                to={`update/${book.bookid}`}
+                style={{ color: "inherit", textDecoration: "none" }}
+              >
+                Update
+              </Link>
+            </button>
+          </div>
+        ))}
+      </div>
+
+      <button className="addHome">
+        <Link to="add" style={{ color: "inherit", textDecoration: "none" }}>
+          Add new book
+        </Link>
+      </button>
+    </div>
+  );*/
+  }
+};
+
+export default Books;
+
+./client/AddCommit.jsx
+import axios from "../axiosConfig";
+import React from "react";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+
+//{ const [book, setBook] = useState({
+const AddSearch = (book) => {
+   booktitle: "",
+    author: "";
+  return();
+};
+
+//quantityinstock: null,
+//bookid: null,
+// })}}
+export default AddSearch;
+
+
+./main.jsx
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import App from './App.jsx'
+import './index.css'
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+)
+
+
+
+/*/
+ * import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App";
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
+
+// If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+reportWebVitals();
+/*/
+
+./pages/Experience.jsx
+import React from "react";
+import {
+  VerticalTimeline,
+  VerticalTimelineElement,
+} from "react-vertical-timeline-component";
+import "react-vertical-timeline-component/style.min.css";
+import SchoolIcon from "@mui/icons-material/School";
+import WorkIcon from "@mui/icons-material/Work";
+
+function Experience() {
+  return (
+    <div className="experience">
+      <VerticalTimeline lineColor="#3e497a">
+        <VerticalTimelineElement
+          className="vertical-timeline-element--education"
+          date="2023 - 2025(projected)"
+          iconStyle={{ background: "#3e497a", color: "#fff" }}
+          icon={<SchoolIcon />}
+        >
+          <h3 className="vertical-timeline-element-title">
+            42 London
+          </h3>
+          <h4 className="vertical-timeline-element-subtitle">
+            <a href="https://42london.com/curriculum/">42 Common Core </a>
+          </h4>
+          <p> 
+              C/C++, Linux, Bash scripting, Vim </p>
+        </VerticalTimelineElement>
+        
+        <VerticalTimelineElement
+          className="vertical-timeline-element--education"
+          date = "2023 - 2024"
+          iconStyle={{ background: "#3e497a", color: "#fff" }}
+          icon={<SchoolIcon />}
+        >
+          <h3 className="vertical-timeline-element-title">
+            Hyperion/CoGrammer
+          </h3>
+
+          <h4 className="vertical-timeline-element-subtitle">
+            < a href="https://www.hyperiondev.com/bootcamps/data-science-bootcamp/"> Data Science Bootcamp </a>
+          </h4>
+          <p> Python, Data Analysis skills, Machine Learning </p>
+        </VerticalTimelineElement>
+
+        <VerticalTimelineElement
+          className="vertical-timeline-element--education"
+          date = "2020 - 2022"
+          iconStyle={{ background: "#3e497a", color: "#fff" }}
+          icon={<SchoolIcon />}
+        >
+          <h3 className="vertical-timeline-element-title">
+            UCC, Ireland
+          </h3>
+
+          <h4 className="vertical-timeline-element-subtitle">
+            < a href="https://www.ucc.ie/en/ck411/"> BSc Data Science & Analytics </a>
+          </h4>
+          <p> Python, Java, SQL, R, Statistics and Probability, Calculus (Multivariable), Linear Algebra, Algorithms and Data Structures, Maths Modelling, Regression Analysis.
+            <a href="https://ucc-ie-public.courseleaf.com/programmes/bscdsa/#programmerequirementstext">  full list... </a>
+          </p>
+        </VerticalTimelineElement>
+
+        <VerticalTimelineElement
+          className="vertical-timeline-element--education"
+          date = "2018 - 2019"
+          iconStyle={{ background: "#3e497a", color: "#fff" }}
+          icon={<SchoolIcon />}
+        >
+          <h3 className="vertical-timeline-element-title">
+            NUI Galway, Ireland
+          </h3>
+
+          <h4 className="vertical-timeline-element-subtitle">
+            Mature Student Access Programme - Science Path
+          </h4>
+          <p> 
+            Maths, Physics, Biology, Chemistry, Academic Skills 
+          </p>
+        </VerticalTimelineElement>
+
+        <VerticalTimelineElement
+          className="vertical-timeline-element--work"
+          date="2006 - 2023"
+          iconStyle={{ background: "#e9d35b", color: "#fff" }}
+          icon={<WorkIcon />}
+        >
+          <h3 className="vertical-timeline-element-title">
+            Career as a Chef
+          </h3>
+          <p>
+            I have had a dynamic and varied career as a Chef since first starting in professional kitchens at 16 years old.<br/>
+            I've worked my way up from dish washing to running my own kitchens in a broad variety of establishments in Ireland, U.K, France and Australia
+          </p>
+        </VerticalTimelineElement>
+
+      </VerticalTimeline>
+    </div>
+  );
+}
+
+export default Experience;
+
+./pages/BookDisplay.jsx
+import React from "react";
+import { useEffect, useState } from "react";
+import { useParams,} from "react-router-dom";
+import axios from "../axiosConfig";
+import "../styles/BookDisplay.css";
+
+function BookDisplay() {
+  const { id } = useParams();
+  const [book, setBook] = useState([]);
+
+  useEffect(() => {
+    const fetchABook = async () => {
+      try {
+        const res = await axios.get("/books/" + id);
+        setBook(res.data[0]);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchABook();
+  }, []);
+
+  //console.log(book)
+  return (
+    <div className="project">
+      <h1> {book.booktitle}</h1>
+      <img src={book.cover} />
+      <p>
+        {book.author}
+      </p>
+    </div>
+  );
+}
+
+export default BookDisplay;
+
+./pages/ProjectDisplay.jsx
+import React from "react";
+import { useParams } from "react-router-dom";
+import GitHubIcon from "@mui/icons-material/GitHub";
+import "../styles/ProjectDisplay.css";
+
+function BookDisplay() {
+  const { id } = useParams();
+  const [books, setBooks] = useState([]);
+
+  useEffect(() => {
+    const fetchAllBooks = async () => {
+      try {
+        const res = await axios.get("http://localhost:8800/books/" + id);
+        setBooks(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchAllBooks();
+  }, []);
+
+
+  return (
+    <div className="book">
+      <h1> {book.name}</h1>
+      <img src={book.image} />
+      <p>
+        <b>Skills:</b> {book.skills}
+      </p>
+      <GitHubIcon />
+    </div>
+  );
+}
+
+export default BookDisplay;
+
+./pages/Projects.jsx
+import React from "react";
+import ProjectItem from "../components/ProjectItem";
+import { ProjectList } from "../helpers/ProjectList";
+
+import "../styles/Projects.css";
+
+function Projects() {
+  return (
+    <div className="projects">
+      <h1> My Personal Projects</h1>
+      <div className="projectList">
+        {ProjectList.map((project, idx) => {
+          return (
+            <ProjectItem id={idx} name={project.name} image={project.image} />
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+export default Projects;
+
+./pages/About.jsx
+import React from "react";
+import { MDRender } from "../components/Markdown";
+import YoutubeEmbed from "../components/YTEmbed";
+import md from "/site.md";
+
+function About() {
+  const pedro_embedId = "f55qeKGgB_M?list=PLpPqplz6dKxW5ZfERUPoYTtNUNvrEebAR"
+  return (
+    <div className="about">
+      <h1> About this Site </h1>
+      <div className="md">
+        <MDRender filename={ md }/>
+      </div>
+      <div className="yt">
+        <YoutubeEmbed id="pedroYT"  embedId={ pedro_embedId } />
+      </div>
+    </div>
+  );
+}
+
+export default About;
+
+./pages/BookDisplay.sync-conflict-20240531-193232-D6DHNHP.jsx
+import React from "react";
+import { useEffect, useState } from "react";
+import { useParams,} from "react-router-dom";
+import axios from "../axiosConfig";
+import "../styles/BookDisplay.css";
+
+function BookDisplay() {
+  const { id } = useParams();
+  const [book, setBook] = useState([]);
+
+  useEffect(() => {
+    const fetchABook = async () => {
+      try {
+        const res = await axios.get("/books/" + id);
+        setBook(res.data[0]);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchABook();
+  }, []);
+
+  console.log(book)
+  return (
+    <div className="project">
+      <h1> {book.booktitle}</h1>
+      <img src={book.cover} />
+      <p>
+        {book.author}
+      </p>
+    </div>
+  );
+}
+
+export default BookDisplay;
+
+./pages/Home.jsx
+import React from "react";
+import "../styles/Home.css";
+import { Socials } from "../components/Socials";
+import { ReactTyped } from "react-typed";
+
+function Home() {
+  //const textArray = ["from", "the", "kitchen", "to", "the", "command", "line","▮"]
+  const textArray = ["from the kitchen to the command line"]
+  return (
+    <div className="home">
+      <div className="home_hd">
+      <h2> Marcus Prunty </h2>
+        <div className="prompt">
+        <p>
+          <ReactTyped
+          strings={textArray}
+          typeSpeed={100}
+          //loop
+          //backSpeed={20}
+          cursorChar="▮"
+          showCursor={true}
+        />
+        </p>
+          <Socials />
+        </div>
+      </div>
+      <div className="skills">
+        <h1> Skills</h1>
+        <ol className="list">
+          <li className="item">
+            <h2>Languages</h2>
+            <span> C/C++, Python, Bash, R, Java, Javascript, mySQL, MongoDB, MariaDB, HTML, CSS </span>
+          </li>
+        </ol>
+      </div>
+    </div>
+  );
+}
+
+  export default Home;
+
+./components/YTEmbed.jsx
+import React from "react";
+import PropTypes from "prop-types";
+
+const YoutubeEmbed = ({ embedId }) => (
+  <div className="video-responsive">
+    <iframe
+      width="853"
+      height="480"
+      src={`https://www.youtube.com/embed/${embedId}`}
+      frameBorder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowFullScreen
+      title="Embedded youtube"
+    />
+  </div>
+);
+
+YoutubeEmbed.propTypes = {
+  embedId: PropTypes.string.isRequired
+};
+
+export default YoutubeEmbed;
+
+./components/Navbar.jsx
+import React, { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import "../styles/Navbar.css";
+import ReorderIcon from "@mui/icons-material/Reorder";
+import Logo from "/quad_parabola_fin.svg";
+
+
+
+function Navbar() {
+  const [expandNavbar, setExpandNavbar] = useState(false);
+
+
+  const location = useLocation();
+
+  useEffect(() => {
+    setExpandNavbar(false);
+  }, [location]);
+
+  return (
+    <div className="navbar" id={expandNavbar ? "open" : "close"}>
+      <div className="toggleButton">
+        <button
+          onClick={() => {
+            setExpandNavbar((prev) => !prev);
+          }}
+        >
+          <ReorderIcon />
+        </button>
+      </div>
+      <div className="links">
+        <img src={ Logo } alt="logo" className="logo" />
+        <Link to="/"> Home </Link>
+        <Link to="/about"> About </Link>
+        <Link to="/experience"> Experience </Link>
+        <Link to="/books"> Book Store </Link>
+    {  //      <Link to="/projects"> Projects </Link>
+         }
+      </div>
+    </div>
+  
+  );
+}
+
+export default Navbar;
+
+./components/BookItem.jsx
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "../axiosConfig";
+
+const handleDelete = async (id) => {
+  try {
+    await axios.delete(`/books/${id}`);
+    window.location.reload()
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+
+function BookItem({book}){//{ id, title, author, image }) {
+  const navigate = useNavigate();
+  //console.log(book);
+  return (
+    <div
+      className="bookItem">
+    <div
+      onClick={() => {
+        navigate("/books/" + book.bookid);
+      }}
+    >
+      <h1> { book.booktitle } </h1>
+      <div style={{ backgroundImage: `url(${book.image})` }} className="bgImage" />
+      <h2> { book.author }</h2>
+    </div>
+    <div>
+      <button className="delete" onClick={() => handleDelete(book.bookid)}>Delete</button>
+      <button className="update">
+        <Link
+          to={`${book.bookid}/update`}
+          style={{ color: "inherit", textDecoration: "none" }}
+        >
+          Update
+        </Link>
+      </button>
+    </div>
+    </div>
+
+  );
+}
+
+export default BookItem;
+
+./components/ProjectItem.jsx
+import React from "react";
+import { useNavigate } from "react-router-dom";
+
+function BookItem({ image, title, author, id }) {
+  const navigate = useNavigate();
+  return (
+    <div
+      className="bookItem"
+      onClick={() => {
+        navigate("/books/" + id);
+      }}
+    >
+      <div style={{ backgroundImage: `url(${image})` }} className="bgImage" />
+      <h1> { name } </h1>
+      <h2> { author }</h2>
+    </div>
+  );
+}
+
+export default ProjectItem;
+
+./components/Markdown.jsx
+import ReactMarkdown from 'react-markdown';
+import { useEffect, useState } from 'react';
+import Axios from "axios";
+
+export const MDRender = (props) =>
+{
+  const [md, setmd] = useState("");
+  
+  useEffect(() => {
+    Axios.get(props.filename).then((res) => { 
+      setmd(res.data);
+
+    });  },[]);
+  console.log(md);
+  return (
+    <div>
+      <ReactMarkdown children={md} />
+    </div>
+  );
+};
+
+./components/Socials.jsx
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
+import EmailIcon from "@mui/icons-material/Email";
+import GithubIcon from "@mui/icons-material/GitHub";
+
+export const Socials = () => {
+  
+  return(
+  <div>
+    <a href="https://github.com/m-prunty" target="_blank"><GithubIcon /></a>
+    <a href="https://www.linkedin.com/in/marcusprunty/" target="_blank"><LinkedInIcon /></a>
+    <a href="mailto:marcusprunty@gmail.com" target="_blank"><EmailIcon /></a>
+  </div>
+  );
+};
+
+
+./components/Footer.jsx
+import React from "react";
+import { Socials } from "./Socials";
+import "../styles/Footer.css";
+
+function Footer() {
+  return (
+    <div className="footer">
+      <div className="socialMedia">
+        <Socials />
+      </div>
+      <p> &copy; 2024 marcusprunty.co.uk</p>
+    </div>
+  );
+}
+
+export default Footer;
+
