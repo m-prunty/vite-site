@@ -7,17 +7,17 @@ import BookItem from "../components/BookItem";
 import "../styles/Books.css";
 
 const Books = () => {
-  const [books, setBooks] = useState();
+  const [books, setWorks] = useState();
 
   console.log(books);
   useEffect(() => {
     const fetchAllBooks = async () => {
       try {
         const res = await axios.get("/books");
-        setBooks(res.data);
+        setWorks(res.data);
       } catch (err) {
         console.log(err);
-        setBooks([{booktitle: "Nodeserver failed"}]);
+        setWorks([{booktitle: "Nodeserver failed"}]);
       }
     };
     fetchAllBooks();

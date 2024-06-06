@@ -20,13 +20,13 @@ function BookDisplay() {
     fetchABook();
   }, []);
 
-  //console.log(book)
+ console.log(book)
   return (
     <div className="project">
-      <h1> {book.booktitle}</h1>
+      <h1> {book.title}</h1>
       <img src={book.cover} />
       <p>
-        {book.author}
+        {book.author_name}
       </p>
     </div>
   );

@@ -2,6 +2,7 @@ import express from "express";
 import axios from "axios";
 import mysql from "mysql2";
 import "./addRequire.js";
+
 var cors = require('cors');
 
 const app = express();
@@ -27,7 +28,7 @@ app.get("/", (req, res) => {
 
 app.get("/books", (req, res) => {
   console.log("Books endpoint hit");
-  const q = "SELECT * FROM StockList";
+  const q = "SELECT * FROM books";
   db.query(q, (err, data) => {
     if (err) {
       console.error("Error fetching books:", err);
@@ -39,9 +40,9 @@ app.get("/books", (req, res) => {
 
 app.post("/books/add", (req, res) => {
   console.log("Add book endpoint hit");
-  const q = "INSERT INTO StockList (`bookid`, `booktitle`, `author`, `quantityinstock`) VALUES (?);";
+  const q = "INSERT INTO books (`book_key`, `booktitle`, `author`, `quantityinstock`) VALUES (?);";
   const values = [
-    req.body.bookid,
+    req.body.book_key,
     req.body.booktitle,
     req.body.author,
     req.body.quantityinstock,
@@ -69,11 +70,23 @@ app.get('/search/ol', async (req, res) => {
   }
 });
 
+app.get('/search/ol_bk', async (req, res) => {
+  console.log("Query parameters:", req.query);
 
-app.delete("/books/:id", (req, res) => {
-  const bookId = req.params.id;
-  console.log(`Deleting book with ID: ${bookId}`);
-  const q = "DELETE FROM StockList WHERE bookid = ?";
+  try {
+    const response = await axios.get('https://openlibrary.org/search.json', { params: req.query });
+    console.log("Open Library response data:", response.data);
+    res.json(response.data);
+  } catch (error) {
+    console.error("Error fetching data from Open Library:", error);
+    res.status(500).send(error.message);
+  }
+});
+
+app.delete("/books/:key", (req, res) => {
+  const bookId = req.params.key;
+  console.log(`Deleting book with key: ${bookId}`);
+  const q = "DELETE FROM StockList WHERE book_key = ?";
 
   db.query(q, [bookId], (err, data) => {
     if (err) {
@@ -84,30 +97,30 @@ app.delete("/books/:id", (req, res) => {
   });
 });
 
-app.get("/books/:id", (req, res) => {
-  const bookId = req.params.id;
-  console.log(`Fetching book with ID: ${bookId}`);
-  const q = "SELECT * FROM StockList WHERE bookid = ?";
+app.get("/books/:key", (req, res) => {
+  const bookId = req.params.key;
+  console.log(`Fetching book with key: ${bookId}`);
+  const q = "SELECT * FROM books WHERE book_key = ?";
 
   db.query(q, [bookId], (err, data) => {
     if (err) {
       console.error("Error fetching book:", err);
       return res.send(err);
     }
-    res.json(data);
+    res.json(data) ? res.json(data) : console.log("Book not in db:") ;
   });
 });
-app.put("/books/:bookid/update", (req, res) => {
-  const bookid = req.params.bookid;
-  console.log(`Updating book with ID: ${bookid}`);
-  const q = "UPDATE StockList SET `booktitle`= ?, `author`= ?, `quantityinstock`= ? WHERE `bookid`= ?;";
+app.put("/books/:book_key/update", (req, res) => {
+  const book_key = req.params.book_key;
+  console.log(`Updating book with ID: ${book_key}`);
+  const q = "UPDATE books SET `booktitle`= ?, `author`= ?, `quantityinstock`= ? WHERE `book_key`= ?;";
   const values = [
     req.body.booktitle,
     req.body.author,
     req.body.quantityinstock,
   ];
 
-  db.query(q, [...values, bookid], (err, data) => {
+  db.query(q, [...values, book_key], (err, data) => {
     if (err) {
       console.error("Error updating book:", err);
       return res.send(err);
@@ -148,7 +161,7 @@ app.get("/", (req, res) => {
 
 app.get("/books", (req, res) => {
   console.log("Books endpoint hit");
-  const q = "SELECT * FROM StockList";
+  const q = "SELECT * FROM books";
   db.query(q, (err, data) => {
     if (err) {
       console.error("Error fetching books:", err);
@@ -160,9 +173,9 @@ app.get("/books", (req, res) => {
 
 app.post("/books/add", (req, res) => {
   console.log("Add book endpoint hit");
-  const q = "INSERT INTO StockList (`bookid`, `booktitle`, `author`, `quantityinstock`) VALUES (?);";
+  const q = "INSERT INTO books (`book_key`, `booktitle`, `author`, `quantityinstock`) VALUES (?);";
   const values = [
-    req.body.bookid,
+    req.body.book_key,
     req.body.booktitle,
     req.body.author,
     req.body.quantityinstock,
@@ -176,10 +189,10 @@ app.post("/books/add", (req, res) => {
   });
 });
 
-app.get("/books/:id", (req, res) => {
-  const bookId = req.params.id;
+app.get("/books/:key", (req, res) => {
+  const bookId = req.params.key;
   console.log(`Fetching book with ID: ${bookId}`);
-  const q = "SELECT * FROM StockList WHERE bookid = ?";
+  const q = "SELECT * FROM books WHERE book_key = ?";
 
   db.query(q, [bookId], (err, data) => {
     if (err) {
@@ -190,10 +203,10 @@ app.get("/books/:id", (req, res) => {
   });
 });
 
-app.delete("/books/:id", (req, res) => {
-  const bookId = req.params.id;
+app.delete("/books/:key", (req, res) => {
+  const bookId = req.params.key;
   console.log(`Deleting book with ID: ${bookId}`);
-  const q = "DELETE FROM StockList WHERE bookid = ?";
+  const q = "DELETE FROM books WHERE book_key = ?";
 
   db.query(q, [bookId], (err, data) => {
     if (err) {
@@ -218,17 +231,17 @@ app.get('/books/olsearch', async (req, res) => {
   }
 });
 
-app.put("/books/:bookid/update", (req, res) => {
-  const bookid = req.params.bookid;
-  console.log(`Updating book with ID: ${bookid}`);
-  const q = "UPDATE StockList SET `booktitle`= ?, `author`= ?, `quantityinstock`= ? WHERE `bookid`= ?;";
+app.put("/books/:book_key/update", (req, res) => {
+  const book_key = req.params.book_key;
+  console.log(`Updating book with ID: ${book_key}`);
+  const q = "UPDATE books SET `booktitle`= ?, `author`= ?, `quantityinstock`= ? WHERE `book_key`= ?;";
   const values = [
     req.body.booktitle,
     req.body.author,
     req.body.quantityinstock,
   ];
 
-  db.query(q, [...values, bookid], (err, data) => {
+  db.query(q, [...values, book_key], (err, data) => {
     if (err) {
       console.error("Error updating book:", err);
       return res.send(err);
@@ -267,16 +280,16 @@ app.get("/", (req, res) => {
 });
 
 app.get("/books", (req, res) => {
-	const q = "SELECT * FROM StockList";
+	const q = "SELECT * FROM books";
 	db.query(q, (err,data) => {
 		return err ? res.json(err) : res.json(data);
 	});
 });
 
 app.post("/books/add", (req, res) => {
-	const q = "INSERT INTO StockList ( `bookid`, `booktitle`, `author`, `quantityinstock`) VALUES (?);"
+	const q = "INSERT INTO books ( `book_key`, `booktitle`, `author`, `quantityinstock`) VALUES (?);"
 	const values = [
-				req.body.bookid,
+				req.body.book_key,
 				req.body.booktitle,
 				req.body.author,
 				req.body.quantityinstock,
@@ -285,9 +298,9 @@ app.post("/books/add", (req, res) => {
 		return err ? res.json(err) : res.json(data);
 	});
 });
-app.get("/books/:id", (req, res) => {
-  const bookId = req.params.id;
-  const q = " SELECT * FROM StockList WHERE bookid = ? ";
+app.get("/books/:key", (req, res) => {
+  const bookId = req.params.key;
+  const q = " SELECT * FROM books WHERE book_key = ? ";
 
   db.query(q, [bookId], (err, data) => {
     if (err) return res.send(err);
@@ -295,9 +308,9 @@ app.get("/books/:id", (req, res) => {
   });
 });
 
-app.delete("/books/:id", (req, res) => {
-  const bookId = req.params.id;
-  const q = " DELETE FROM StockList WHERE bookid = ? ";
+app.delete("/books/:key", (req, res) => {
+  const bookId = req.params.key;
+  const q = " DELETE FROM books WHERE book_key = ? ";
 
   db.query(q, [bookId], (err, data) => {
     if (err) return res.send(err);
@@ -321,17 +334,17 @@ app.get('/books/olsearch', async (req, res) => {
   }
 });
 
-app.put("/books/:bookid/update", (req, res) => {
-	const bookid = req.params.bookid;
-	const q = "UPDATE StockList SET `booktitle`= ?, `author`= ?, `quantityinstock`= ? WHERE `bookid`= ? ;"
-	console.log(bookid);
+app.put("/books/:book_key/update", (req, res) => {
+	const book_key = req.params.book_key;
+	const q = "UPDATE books SET `booktitle`= ?, `author`= ?, `quantityinstock`= ? WHERE `book_key`= ? ;"
+	console.log(book_key);
 	const values = [
 				req.body.booktitle,
 				req.body.author,
 				req.body.quantityinstock,
 				];
 
-  db.query(q, [...values,bookid], (err, data) => {
+  db.query(q, [...values,book_key], (err, data) => {
     if (err) return res.send(err);
     return res.json(data);
   });

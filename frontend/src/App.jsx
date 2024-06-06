@@ -10,7 +10,7 @@ import Books from "./client/Books";
 import BookDisplay from "./pages/BookDisplay"
 import Add from "./client/Add";
 import Update from "./client/Update";
-import AddSearch from "./client/AddSearch";
+import SearchAdd from "./client/SearchAdd";
 
 const port_mysql = 8800
 
@@ -33,11 +33,10 @@ function App() {
           <Route path="/experience" element={<Experience />} />
           <Route path="/books/*" element={<BookStore />}>
             <Route index element={<Books />} />
-            <Route path='*' element={<Books />} />
             <Route path=":id" element={<BookDisplay />} />
             <Route path="add" element={<Add />} />
             <Route path=":id/update" element={<Update />} />
-            <Route path="addsearch" element={<AddSearch />} />
+            <Route path="addsearch" element={<SearchAdd />} />
           </Route>
         </Routes>
         <Footer />
