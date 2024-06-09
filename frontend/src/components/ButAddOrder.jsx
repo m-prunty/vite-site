@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { axios}
+import  axios  from "../axiosConfig"
 
 function ButAddOrder(props){
   const [count, setCount] = useState(1);

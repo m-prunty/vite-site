@@ -51,7 +51,6 @@ function BookDisplay() {
       <p>
         {book.description}
       </p>
-        <ButAddOrder book={book}/>
     </div>
   );
 }
