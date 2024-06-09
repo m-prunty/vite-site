@@ -7,7 +7,7 @@ CREATE TABLE `books`(
 		book_id INT NOT NULL AUTO_INCREMENT,
 		book_key VARCHAR(15) NOT NULL UNIQUE, 
 		title VARCHAR(50),
-		cover INT,
+		cover_i INT,
 		quantity INT,
 		price INT,
 		year DATETIME,

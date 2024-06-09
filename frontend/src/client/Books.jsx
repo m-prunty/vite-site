@@ -39,13 +39,13 @@ return (
      <div className="books">
        <h1> All Books </h1>
       <nav className="bookList">
-        <Link to="add">Add New Book</Link>
+        <Link to="addsearch">Add New Book</Link>
       </nav>
 
        <div className="bookList">
-        {books?.map((book, bookid ) => {
+        {books?.map((book, book_key ) => {
           return (
-            <div key={book.bookid}>
+            <div key={book.book_key}>
               <BookItem  book={book} /> 
             </div>
                );
