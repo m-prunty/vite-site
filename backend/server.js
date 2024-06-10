@@ -53,24 +53,33 @@ app.get("/books", (req, res) => {
 
 app.post("/books/add", (req, res) => {
 	console.log("Add book endpoint hit");
-	const q = "INSERT INTO books (`book_key`, `booktitle`, `author`, `quantityinstock`) VALUES (?);";
+	const q = `CALL InsertOrUpdateBookAndAuthor(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 	const values = [
+		req.body.author_key,
+		req.body.author_name,
+		req.body.author_title,
+		req.body.photo,
+		req.body.dob,
+		req.body.bio,
 		req.body.book_key,
-		req.body.booktitle,
-		req.body.author,
-		req.body.quantityinstock,
+		req.body.title,
+		req.body.cover,
+		req.body.description,
+		req.body.year,
+		req.body.quantity,
+		req.body.price
 	];
-	db.query(q, [values], (err, data) => {
+
+	db.query(q, values, (err, data) => {
 		if (err) {
-			console.error("Error adding book:", err);
-			return res.json(err);
+			console.error("Error adding book and author:", err);
+			return res.status(500).json(err);
 		}
 		res.json(data);
 	});
 });
 
-
-app.get('/search/ol', async (req, res) => {
+app.get('/ol/search', async (req, res) => {
 	console.log("Query parameters:", req.query);
 
 	try {
@@ -84,7 +93,7 @@ app.get('/search/ol', async (req, res) => {
 	}
 });
 
-app.get('/search/ol/:key', async (req, res) => {
+app.get('/ol/books/:key', async (req, res) => {
 	const book_key = req.params.key;
 	const url = `https://openlibrary.org/books/${book_key}.json`
 	console.log("Query parameters:", req.query);

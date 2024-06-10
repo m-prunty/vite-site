@@ -45,13 +45,13 @@ function BookItem({book}){//{ id, title, author, image }) {
       className="bookItem">
     <div
       onClick={() =>{ 
-        const key = book.book_key ? book.book_key : book.cover_edition_key
+        const key = book.book_key;
         navigate("/books/" + key );
       }}
     >
       <h1> { book.title } </h1>
       <div style={{ backgroundImage: olurl }} className="bgImage" />
-      <h2>{ book.author_name }</h2>
+      <h2>{ book.author_name.join(" & ") }</h2>
     </div>
     <div>
       <AddButton link="/books/add" book={book} />

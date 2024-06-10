@@ -14,7 +14,8 @@ const Books = () => {
     const fetchAllBooks = async () => {
       try {
         const res = await axios.get("/books");
-        setWorks(res.data);
+        //res.data?.map((res.data)=>({...res.data, src: "DB"})));
+        setWorks(res.data)
       } catch (err) {
         console.log(err);
         setWorks([{booktitle: "Nodeserver failed"}]);
@@ -39,11 +40,13 @@ return (
      <div className="books">
        <h1> All Books </h1>
       <nav className="bookList">
-        <Link to="addsearch">Add New Book</Link>
+        <Link to="addsearch">Search More Available Books</Link>
+        <Link to="cart">Shopping Cart</Link>
       </nav>
 
        <div className="bookList">
         {books?.map((book, book_key ) => {
+          book.author_name = book.authors.split(", ")
           return (
             <div key={book.book_key}>
               <BookItem  book={book} /> 

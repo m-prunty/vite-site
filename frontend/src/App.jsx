@@ -5,6 +5,7 @@ import About from "./pages/About";
 //import Projects from "./pages/Projects";
 import Experience from "./pages/Experience";
 import Navbar from "./components/Navbar";
+import NavbarBooks from "./components/NavbarBooks";
 import Footer from "./components/Footer";
 import Books from "./client/Books";
 import BookDisplay from "./pages/BookDisplay"
@@ -17,6 +18,7 @@ const port_mysql = 8800
 function BookStore(){
   return (
     <div>
+    <NavbarBooks />
       <Outlet /> 
     </div>
   );
@@ -37,6 +39,7 @@ function App() {
             <Route path="add" element={<Add />} />
             <Route path=":id/update" element={<Update />} />
             <Route path="addsearch" element={<SearchAdd />} />
+            <Route path="cart" element={<SearchAdd />} />
           </Route>
         </Routes>
         <Footer />

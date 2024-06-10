@@ -3,7 +3,7 @@ import  axios  from "../axiosConfig"
 
 function ButAddOrder(props){
   const [count, setCount] = useState(1);
-
+  const book = props.book
   return(
     <div> 
       <button onClick={() => {
@@ -13,8 +13,10 @@ function ButAddOrder(props){
         <button 
           className="buy"
           onClick={() => {
-            return (props.book)
-            //console.log(props.book)
+            console.log(book)
+            book.count = count
+            console.log(book)
+            //return (props.book)
         }}
         >
             Order: {count}
