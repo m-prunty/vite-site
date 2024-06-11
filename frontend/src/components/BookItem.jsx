@@ -37,7 +37,7 @@ function AddButton(props){
 //    <button className="delete" onClick={() => handleDelete(book.bookid)}>Delete</button>
 function BookItem({book}){//{ id, title, author, image }) {
   const navigate = useNavigate();
-  const olurl =  `url(http://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg)`
+  const olurl =  `url(http://covers.openlibrary.org/b/id/${book.cover}-M.jpg)`
   //console.log(olurl);
   console.log(book);
   return (

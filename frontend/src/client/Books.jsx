@@ -46,7 +46,9 @@ return (
 
        <div className="bookList">
         {books?.map((book, book_key ) => {
-          book.author_name = book.authors.split(", ")
+          console.log(book.authors);
+          book.author_name = book.authors.split(", ");
+          console.log(book.author_name);
           return (
             <div key={book.book_key}>
               <BookItem  book={book} /> 

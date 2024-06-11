@@ -18,7 +18,9 @@ function BookDisplay() {
         const res = await axios.get("/books/" + id);
         
         console.log(res.data);
-        setBook(res.data);
+        setBook({...res.data,
+           author_keys: res.data.authors
+        });
         console.log(book);
 
       } catch (err) {
@@ -26,7 +28,6 @@ function BookDisplay() {
         try{
           const res = await axios.get("/ol/books/" +id)
           console.log(res.data);
-          //setBook(res.data);
           setBook({...res.data, 
             cover: res.data.covers[0], 
             author_keys: res.data.authors && res.data.authors.length > 0 
@@ -49,7 +50,7 @@ function BookDisplay() {
     <div className="project">
       <h1> {book.title}</h1>
       <img src={`http://covers.openlibrary.org/b/id/${book.cover}-M.jpg`} />
-      <h2>{book.author_name}</h2>
+      <h2>{book.author_name?.join(" & ")}</h2>
       <p>
         {book.price},
         {book.quantity},

@@ -125,7 +125,7 @@ app.delete("/books/:key", (req, res) => {
 app.get("/books/:key", (req, res) => {
 	const book_key = req.params.key;
 	console.log(`Fetching book with key: ${book_key}`);
-	const q = "SELECT * FROM books WHERE book_key = ?";
+	const q = "SELECT * FROM book_author_view WHERE book_key = ?";
 
 	db.query(q, [book_key], (err, data) => {
 	if (err) {

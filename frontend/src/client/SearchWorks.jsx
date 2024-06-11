@@ -8,6 +8,7 @@ const SearchWorks = ({works}) =>{
        <h1> All Books </h1>
        <div className="bookList">
         {works?.map((book, book_key ) => {
+          book.cover = book.cover_i;
           book.book_key = book.cover_edition_key ? book.cover_edition_key : book.book_key;
           return  book.book_key &&(
             <div key={book.book_key}>

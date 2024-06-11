@@ -101,7 +101,8 @@ SELECT
     b.quantity,
     b.price,
     b.year,
-    GROUP_CONCAT(CONCAT(a.author_key,": ",a.name) ORDER BY a.author_id SEPARATOR ', ') AS authors
+    GROUP_CONCAT(a.name  ORDER BY a.author_id SEPARATOR ', ') AS authors,
+    GROUP_CONCAT(a.author_key  ORDER BY a.author_id SEPARATOR ', ') AS author_keys
 FROM 
     books b
 LEFT JOIN 
