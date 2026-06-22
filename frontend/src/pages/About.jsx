@@ -1,18 +1,17 @@
 import React from "react";
 import { MDRender } from "../components/Markdown";
-import YoutubeEmbed from "../components/YTEmbed";
-import md from "/site.md";
+import md from "/resume.md";
 
 function About() {
-  const pedro_embedId = "f55qeKGgB_M?list=PLpPqplz6dKxW5ZfERUPoYTtNUNvrEebAR"
   return (
     <div className="about">
-      <h1> About this Site </h1>
-      <div className="md">
-        <MDRender filename={ md }/>
+       <div className="about-header">
+        <h1>My CV</h1>
+        <p className="subtitle">Backend Developer · C / Python · Linux</p>
       </div>
-      <div className="yt">
-        <YoutubeEmbed id="pedroYT"  embedId={ pedro_embedId } />
+
+      <div className="md">
+        <MDRender filename={md} />
       </div>
     </div>
   );
